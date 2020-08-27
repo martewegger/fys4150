@@ -4,16 +4,16 @@
 #ifndef HEADER_FILE_HPP
 #define HEADER_FILE_HPP
 
-class Trapezoidal {
+class Classname {
 private:
-  double m_a, m_b, m_I, m_stepsize;
-  int m_N;
+  double gi, xi, di, ei, x0, xn, h;
+  int m_n;
 
 public:
 
-  void Initialize(double a, double b, int N);
-  void Integrate(double f(double x));
-  void Print();
+  void Initialize(int n);
+  void Function(double f(double xi), double u_func(double xi));
+  //void Print();
 };
 
 #endif

@@ -55,12 +55,14 @@ void Classname::Function(double f(double xi), double u_func(double xi)){
 
 }
 
-
 void Classname::Write_to_file(string filename){
 
     m_ofile.open(filename);
-    for (int i = 0; i < m_n; i++){
-      m_ofile << m_x[i] <<  "     " << m_u[i] << endl;
+    m_ofile <<'#'<< 'x' <<  "               " << "numerical u" << "     "<< "analytic u" << endl;
+    m_ofile << m_x[0] <<  "               " << m_u[0] << "            "<< u_analytic[0] << endl;
+    for (int i = 1; i < m_n; i++){
+
+      m_ofile << m_x[i] <<  "       " << m_u[i] << "       "<< u_analytic[i] << endl;
     }
     m_ofile.close();
 

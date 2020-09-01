@@ -15,7 +15,7 @@ double exact(double x) {return 1.0-(1-exp(-10))*x-exp(-10*x);}
 
 // Begin main program
 int main(int argc, char *argv[]){
-  int exponent; 
+  int exponent;
     string filename;
     // We read also the basic name for the output file and the highest power of 10^n we want
     if( argc <= 1 ){
@@ -27,7 +27,7 @@ int main(int argc, char *argv[]){
         filename = argv[1]; // first command line argument after name of program
         exponent = atoi(argv[2]);
     }
-      
+
       int  n = (int) pow(10.0,exponent);
       // Declare new file name
       string fileout = filename;
@@ -42,7 +42,7 @@ int main(int argc, char *argv[]){
       double *x = new double [n+1];
       // Quick setup of updated diagonal elements and value of
       d[0] = d[n] = 2; solution[0] = solution[n] = 0.0;
-      for (int i = 1; i < n; i++) d[i] = (i+1.0)/( (double) i);  
+      for (int i = 1; i < n; i++) d[i] = (i+1.0)/( (double) i);
       for (int i = 0; i <= n; i++){
           x[i] = i*h;
           b[i] = hh*f(x[i]);
@@ -75,5 +75,3 @@ int main(int argc, char *argv[]){
       delete [] x; delete [] d; delete [] b; delete [] solution;
     return 0;
 }
-
-

@@ -101,3 +101,17 @@ void Classname::Write_to_file(string filename){
     m_ofile.close();
 
 }
+
+void Classname::print_relative_error(){
+  double highnumber=0.;
+  double error=0.;
+  for (int i=0; i<m_n;i++){
+    if (u_analytic[i]!=0){
+      error=sqrt(pow((m_u[i]-u_analytic[i])/u_analytic[i],2));
+    }
+    if (error > highnumber){
+      highnumber=error;
+    }
+  }
+  cout << "log(h)= "<< log10(h) << " log_error= " << log10(highnumber) << endl;
+}

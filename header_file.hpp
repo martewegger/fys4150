@@ -11,8 +11,8 @@ using namespace std;
 
 class Classname {
 private:
-  double gi, xi, di, ei, x0, xn, h, bi_tilde;
-  double *m_u, *m_v, *m_x_spec, *m_x_gen, *g_tilde, *d_tilde, *u_analytic, *v_analytic, *a, *b, *c, *q, *p, *b_tilde;
+  double gi, xi, di, ei, x0, xn, h;
+  double *m_u, *m_v, *m_x_spec, *m_x_gen, *g_tilde, *d_tilde, *u_analytic, *v_analytic, *a, *b, *c, *q, *p, *bi_tilde;
   int m_n;
   ofstream m_ofile; //outfile
 

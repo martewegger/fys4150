@@ -21,7 +21,8 @@ int main(int argc, char const *argv[]) {
   //Solve integral
   Classname my_solver;
   my_solver.Initialize(n);
-  my_solver.Function(f,u_func);
+  my_solver.Function_general(f,u_func);
+  my_solver.Function_special(f,u_func);
   my_solver.Write_to_file(filename);
   //my_solver.Print(); //ha den imens, kanskje fjerne?
 

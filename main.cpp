@@ -16,7 +16,7 @@ double u_func(double xi);
 
 int main(int argc, char const *argv[]) {
   //Parameters
-  int n = 1000000000;
+  int n = 1000000;
   string filename = "data_10.txt";
 
   //Solve integral

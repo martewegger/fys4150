@@ -4,4 +4,4 @@ compile:
 	c++ -o main.out TridiagonalLUdecomp.cpp
 
 execute:
-	./main.out 
+	./main.out

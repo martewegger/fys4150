@@ -43,6 +43,7 @@ void Classname::Initialize(int n){
   u_analytic = new double[m_n];
   d_tilde[0] = di;
 
+
 }
 
 
@@ -51,18 +52,20 @@ void Classname::Initialize(int n){
 void Classname::Function_general(double f(double xi), double u_func(double xi)){
   bi_tilde[0]=pow(h,2) * f(x0+h);
   q[0] = pow(h,2)*f(x0+h); //fordi q1 = btilde1
-
+  for (int i = 0; i< m_n;i++){
+    bi_tilde[i] = pow(h,2) * f(x0+h*i);
+  }
   for(int i = 1; i < m_n; i++){ //Forward part
     m_x_gen[i] = x0 + (i+1)*h;
-    bi_tilde[i] = pow(h,2) * f(m_x_gen[i]);
-    q[i] = bi_tilde[i] - ((bi_tilde[i-1]*a[i-1]) / b[i-1]);
-    p[i] = b[i] - ((c[i-1]*a[i-1])/b[i-1]);
+    //bi_tilde[i] = pow(h,2) * f(m_x_gen[i]);
+    bi_tilde[i] = bi_tilde[i] - ((bi_tilde[i-1]*a[i-1]) / b[i-1]);
+    b[i] = b[i] - ((c[i-1]*a[i-1])/b[i-1]);
     v_analytic[i] = u_func(m_x_gen[i]);
   }
 
-  m_v[m_n-1] =  q[m_n-1]/p[m_n-1];
+  m_v[m_n-1] =  bi_tilde[m_n-1]/b[m_n-1];
   for (int i = (m_n-2); i >= 0; i--){ //Backward part
-    m_v[i] = (bi_tilde[i]-(c[i]*m_v[i+1]))/p[i];
+    m_v[i] = (bi_tilde[i]-(c[i]*m_v[i+1]))/b[i];
   }
 
 }

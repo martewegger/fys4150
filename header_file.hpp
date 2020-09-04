@@ -25,7 +25,7 @@ public:
   void Initialize(int n,int cond);
   void Function_special(double f(double xi), double u_func(double xi));
   void Function_general(double f(double xi), double u_func(double xi));
-  void print_relative_error();
+  void print_relative_error(double u_func(double xi));
   void lu_decomp(double f(double xi));
   void Write_to_file(string filename);
 };

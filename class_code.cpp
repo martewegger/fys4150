@@ -17,7 +17,7 @@ void Classname::Initialize(int n,int cond){
   x0 = 0.;
   xn = 1.;
   m_n = n;
-  h = (xn - x0)/(m_n+2);  //steplength
+  h = (xn - x0)/(m_n+1);  //steplength
 
   // General case:
   a = new double[m_n];
@@ -29,6 +29,7 @@ void Classname::Initialize(int n,int cond){
   v_analytic = new double[m_n];
   for (int i =0 ; i<m_n; i++){
     m_x[i] = x0 + (i+1)*h;
+
     a[i]=1.;
     b[i]=-2.;
     c[i]=1.;
@@ -47,7 +48,7 @@ void Classname::Initialize(int n,int cond){
 // General:
 void Classname::Function_general(double f(double xi), double u_func(double xi)){
   for (int i = 0; i< m_n;i++){
-    b_tilde[i] = pow(h,2) * f(x0+h*i);
+    b_tilde[i] = pow(h,2) * f(m_x[i]);
   }
 
   //Forward part:
@@ -68,14 +69,14 @@ void Classname::Function_general(double f(double xi), double u_func(double xi)){
 // Special:
 void Classname::Function_special(double f(double xi), double u_func(double xi)){
 
-  g_tilde[0] = pow(h,2)*f(x0+h); //må ha denne her fordi vi bruker f, why h, skal være x0??
+  g_tilde[0] = pow(h,2)*f(m_x[0]); //må ha denne her fordi vi bruker f, why h, skal være x0??
 
   //Forward part:
-  u_analytic[0] = u_func(m_x[0]);
+  //u_analytic[0] = u_func(m_x[0]);
   for(int i = 1; i < m_n; i++){
     g_tilde[i] = pow(h,2) * f(m_x[i]);
     g_tilde[i] += (g_tilde[i-1]*(i) / (double)(i+1));
-    u_analytic[i] = u_func(m_x[i]);
+    //u_analytic[i] = u_func(m_x[i]);
   }
 
   //Backward part:
@@ -87,10 +88,11 @@ void Classname::Function_special(double f(double xi), double u_func(double xi)){
 }
 
 
-void Classname::print_relative_error(){
+void Classname::print_relative_error(double u_func(double xi)){
   double highnumber=0.;
   double error=0.;
   for (int i=0; i<m_n;i++){
+    u_analytic[i]=u_func(m_x[i]);
     if (u_analytic[i]!=0){
       //error=sqrt(pow((m_u_specsol[i]-u_analytic[i])/u_analytic[i],2));
       error=abs((m_u_specsol[i]-u_analytic[i])/u_analytic[i]);
@@ -119,7 +121,7 @@ void Classname::lu_decomp(double f(double xi)){
   A(m_n-1,m_n-1)=-2.;
 
   for (int i=0;i<m_n;i++){
-    q[i]=h*h*f(x0+i*h);
+    q[i]=h*h*f(m_x[i]);
   }
   lu(L,U,A);
   y = solve(L,q); // solving Ly = q

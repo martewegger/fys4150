@@ -18,10 +18,10 @@ double u_func(double xi);
 
 int main(int argc, char const *argv[]) {
   //Parameters
-  int n = 10;
-  int cond=100000;
+  int n = 1000;
+  int cond=10000;
   //string filename = "data.txt";
-  string filename = "data_10.txt";
+  string filename = "data_1000.txt";
 
   //Solve integral
   Classname my_solver;
@@ -36,14 +36,18 @@ int main(int argc, char const *argv[]) {
   my_solver.Function_special(f,u_func);
   clock_t c_end_spec = clock();
 
-  my_solver.print_relative_error();
+  my_solver.print_relative_error(u_func);
 
   clock_t c_start_lu = clock();
   if (n<cond){
     my_solver.lu_decomp(f);
   }
   clock_t c_end_lu = clock();
-  //my_solver.Write_to_file(filename);
+
+  if (n<cond){
+    my_solver.Write_to_file(filename);
+  }
+
   cout << "done"<< endl;
   long double time_elapsed_ms_gen = 1000.0 * (c_end_gen-c_start_gen) / CLOCKS_PER_SEC;
   cout << "CPU time used for general algo: " << time_elapsed_ms_gen << " ms" << endl;
@@ -61,5 +65,5 @@ double f(double xi){
 }
 
 double u_func(double xi){
-  return 1 - ((1-exp(-10))*xi) - exp(-10*xi);
+  return 1. - ((1-exp(-10))*xi) - exp(-10*xi);
 }

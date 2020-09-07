@@ -14,10 +14,10 @@ using namespace arma;
 // Function initializing variables
 void Class_Poisson_Dirichlet::Initialize(int n,int cond){
   m_cond = cond;
-  x0 = 0.;                    // Starting point
-  xn = 1.;                    // End point
-  m_n = n;                    // Number of steps
-  h = (xn - x0)/(m_n+1);      // Steplength
+  x0 = 0.;                            // Starting point
+  xn = 1.;                            // End point
+  m_n = n;                            // Number of steps
+  h = (xn - x0)/(m_n+1);              // Steplength
 
   // General case:
   a = new double[m_n];                // Lower diagonal elements
@@ -87,8 +87,8 @@ void Class_Poisson_Dirichlet::Function_special(double f(double xi), double v_fun
 
 // Function for computing and printing relative errors
 void Class_Poisson_Dirichlet::print_relative_error(double v_func(double xi)){
-  double highnumber = 0.;       // Max error
-  double error = 0.;            // Error
+  double highnumber = 0.;                 // Max error
+  double error = 0.;                      // Error
 
   for (int i = 0; i < m_n;i++){
     v_analytic[i] = v_func(m_x[i]);       // Exact solution
@@ -122,8 +122,8 @@ void Class_Poisson_Dirichlet::lu_decomp(double f(double xi)){
     q[i] = pow(h,2)*f(m_x[i]);
   }
   lu(L,U,A);
-  y = solve(L,q); // solving Ly = q
-  u_LU = solve(U,y); // solving Ux = y
+  y = solve(L,q);       // solving Ly = q
+  u_LU = solve(U,y);    // solving Ux = y
 }
 
 // FUnction writing results to file
@@ -139,7 +139,6 @@ void Class_Poisson_Dirichlet::Write_to_file(string filename){
       m_ofile << setw(15) << " LU decomp";
     }
     m_ofile << setw(15) << "analytic " << endl;
-
 
     m_ofile << setw(15) << setprecision(8) << m_x[0];
     m_ofile << setw(15) << setprecision(8) << m_v_gensol[0];

@@ -11,17 +11,15 @@
 using namespace std;
 using namespace arma;
 
-class Classname {
+class Class_Poisson_Dirichlet {
 private:
-  double gi, xi, di, ei, x0, xn, h;
-  double *m_u_specsol, *m_u_gensol, *m_x, *g_tilde, *u_analytic, *v_analytic, *a, *b, *c, *q, *p, *b_tilde;
-  int m_n;
+  double x0, xn, h, xi, gi, di, ei;
+  double *m_x, *m_v_specsol, *m_v_gensol, *b_tilde_gen, *b_tilde_spec, *v_analytic, *a, *b, *c;
+  int m_n, m_cond;
   ofstream m_ofile; //outfile
   vec u_LU,y;
-  int m_cond;
 
 public:
-
   void Initialize(int n,int cond);
   void Function_special(double f(double xi), double u_func(double xi));
   void Function_general(double f(double xi), double u_func(double xi));

@@ -18,10 +18,11 @@ double u_func(double xi);
 
 int main(int argc, char const *argv[]) {
   //Parameters
-  int n = 1000;
+  int n = 1000000;
   int cond=10000;
   //string filename = "data.txt";
-  string filename = "data_1000.txt";
+  //string filename = "data_1000.txt";
+  string filename = "test.txt";
 
   //Solve integral
   Classname my_solver;

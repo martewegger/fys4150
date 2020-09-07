@@ -12,7 +12,7 @@ using namespace std;
 using namespace arma;
 
 double f(double xi);
-double u_func(double xi);
+double v_func(double xi);
 
 
 
@@ -29,14 +29,14 @@ int main(int argc, char const *argv[]) {
   my_solver.Initialize(n, cond);
 
   clock_t c_start_gen = clock();
-  my_solver.Function_general(f,u_func);
+  my_solver.Function_general(f,v_func);
   clock_t c_end_gen = clock();
 
   clock_t c_start_spec = clock();
-  my_solver.Function_special(f,u_func);
+  my_solver.Function_special(f,v_func);
   clock_t c_end_spec = clock();
 
-  my_solver.print_relative_error(u_func);
+  my_solver.print_relative_error(v_func);
 
   clock_t c_start_lu = clock();
   if (n<cond){
@@ -64,6 +64,6 @@ double f(double xi){
   return -100*exp(-10*xi);
 }
 
-double u_func(double xi){
+double v_func(double xi){
   return 1. - ((1-exp(-10))*xi) - exp(-10*xi);
 }

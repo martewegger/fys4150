@@ -103,33 +103,30 @@ void Class_Poisson_Dirichlet::print_relative_error(double v_func(double xi)){
 
 // Function for computing the LU decomposition
 void Class_Poisson_Dirichlet::lu_decomp(double f(double xi)){
-  cout << "here" << endl;
-  mat A = mat(m_n,m_n);
-  mat L,U;
-  vec q = vec(m_n);
-  A = A.fill(0.0);
-  A(0,0) = 1.;
-  for (int i = 0; i < m_n-1; i++){
-    A(i,i+1) = 1.;
-    A(i,i) = -2.;
-    A(i+1,i) = 1.;
-  }
-  A(m_n-1,m_n-1) = -2.;
+  mat A = mat(m_n,m_n);                   // creating a n x n matrix
+  mat L,U;                                // matrix pointers
+  vec q = vec(m_n);                       // creating a vector of length n
+  A = A.fill(0.0);                        // filling matrix A with zeros
 
-  for (int i = 0; i < m_n; i++){
+  for (int i = 0; i < m_n-1; i++){        // loop for filling filling matrix A
+    A(i,i+1) = 1.;              // A is 1 on the lower digonal
+    A(i,i) = -2.;               // A is -2 on the diagonal
+    A(i+1,i) = 1.;              // A is 1 on the upper diagonal
+  }
+  A(m_n-1,m_n-1) = -2.;     // the lower right value has to be filled outsite the loop
+
+  for (int i = 0; i < m_n; i++){  // filling vector with the RHS of the equation, Ly = q
     q[i] = pow(h,2)*f(m_x[i]);
   }
-  lu(L,U,A);
+  lu(L,U,A);  // calling armadillos LU decomposition function
   y = solve(L,q);       // solving Ly = q
   u_LU = solve(U,y);    // solving Ux = y
 }
 
-// FUnction writing results to file
+// Function writing results to file
 void Class_Poisson_Dirichlet::Write_to_file(string filename){
 
     m_ofile.open(filename);
-    //m_ofile <<'#'<< 'x' <<  "               " << "gen sol" << "         " << "spec sol" << "     "<< "analytic u" <<  endl;
-    //m_ofile << m_x[0] <<  "  " << m_v_gensol[0] << "     " << m_v_specsol[0] << "            "<< v_analytic[0] << endl;
     m_ofile << setw(15) << "# x";
     m_ofile << setw(15) << " gen sol";
     m_ofile << setw(15) << " spec sol";
@@ -153,7 +150,6 @@ void Class_Poisson_Dirichlet::Write_to_file(string filename){
         m_ofile << setw(15) << setprecision(8) << u_LU(i);
       }
       m_ofile << setw(15) << setprecision(8) << v_analytic[i] <<endl;
-      //m_ofile << m_x[i] <<  "     " << m_v_gensol[i]<< "     " << m_v_specsol[i] << "     "<< v_analytic[i] << endl;
     }
     m_ofile.close();
 

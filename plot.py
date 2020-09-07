@@ -40,7 +40,7 @@ def plot(n):
     #plt.show()
 
 N=1000
-plot(N)
+#plot(N)
 
 
 def plot_rel_errors():
@@ -52,7 +52,7 @@ def plot_rel_errors():
     plt.xlabel('$log_{10}(h)$');plt.ylabel('$log_{10}(\\varepsilon$)')
     plt.savefig('max_errors.png')
     plt.show()
-#plot_rel_errors()
+plot_rel_errors()
 
 def error():
     rel_error=np.abs((LU-analytic)/analytic)
@@ -64,14 +64,20 @@ def error():
 
 def c():
     filename = 'c.txt'
-    gen, spec = np.transpose(np.loadtxt(filename))
+    gen, spec, LU = np.transpose(np.loadtxt(filename))
+    n = np.array((1,2,3,4,5,6))
     n = np.array((1e1,1e2,1e3,1e4,1e5,1e6))
-    plt.figure(figsize=(6,6));plt.title('CPU times for the general and sepcialized algrithms')
+
+    plt.figure(figsize=(6,6));
+    plt.title('CPU times for the special, general and LU algorithms')
     plt.plot(n,spec, c = 'k', lw = 0.8, ls = 'solid', label = 'Special algo')
     plt.plot(n,gen, c = 'k', lw = 0.8, ls = 'dashed', label = 'General algo')
-    plt.xlabel('Number of steps, n')
-    plt.ylabel('CPU time [ms]')
+    plt.plot(n[:4],LU[:4], c = 'k', lw = 0.8, ls = 'dotted', label = 'LU algo')
+    plt.xlabel('Number of steps')
+    plt.xscale('log')
+    plt.yscale('log')
     plt.legend()
+
     plt.savefig('c.png')
 
-c()
+#c()

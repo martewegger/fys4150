@@ -18,38 +18,36 @@ double v_func(double xi);
 
 int main(int argc, char const *argv[]) {
   //Parameters
-  int n = 1000000;
-  int cond=10000;
-  //string filename = "data.txt";
+  int n = 1000;
+  int cond=100000;
+  string filename = "data.txt";
   //string filename = "data_1000.txt";
-  string filename = "test.txt";
 
-  //Solve integral
-  Classname my_solver;
 
-  my_solver.Initialize(n, cond);
+  Class_Poisson_Dirichlet my_solver; //initiate class
 
-  clock_t c_start_gen = clock();
-  my_solver.Function_general(f,v_func);
+  my_solver.Initialize(n, cond);    // call function for parameter initiation
+
+  clock_t c_start_gen = clock(); // timing the following function
+  my_solver.Function_general(f,v_func);   // solving the diff. eq. with the general algorithm
   clock_t c_end_gen = clock();
 
   clock_t c_start_spec = clock();
-  my_solver.Function_special(f,v_func);
+  my_solver.Function_special(f,v_func); // call to the special algorithm
   clock_t c_end_spec = clock();
 
-  my_solver.print_relative_error(v_func);
+  my_solver.print_relative_error(v_func);   // a function for printing log10(max relative errors) to terminal
 
   clock_t c_start_lu = clock();
-  if (n<cond){
-    my_solver.lu_decomp(f);
+  if (n<cond){ // if statement to only run LU algo if N<1e5
+    my_solver.lu_decomp(f); // LU decomposition algorithm
   }
   clock_t c_end_lu = clock();
 
   if (n<cond){
-    my_solver.Write_to_file(filename);
+    my_solver.Write_to_file(filename); // function that writes data to file
   }
 
-  cout << "done"<< endl;
   long double time_elapsed_ms_gen = 1000.0 * (c_end_gen-c_start_gen) / CLOCKS_PER_SEC;
   cout << "CPU time used for general algo: " << time_elapsed_ms_gen << " ms" << endl;
   long double time_elapsed_ms_spec = 1000.0 * (c_end_spec-c_start_spec) / CLOCKS_PER_SEC;
@@ -60,11 +58,12 @@ int main(int argc, char const *argv[]) {
 
   return 0;
 }
-
+// right hand side of the differential equation
 double f(double xi){
   return -100*exp(-10*xi);
 }
 
+//analytical solution to the differential equation
 double v_func(double xi){
   return 1. - ((1-exp(-10))*xi) - exp(-10*xi);
 }

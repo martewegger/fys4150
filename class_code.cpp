@@ -37,8 +37,6 @@ void Class_Poisson_Dirichlet::Initialize(int n,int cond){
   }
 
   // Special case:
-  di = -2.;                           // Diagonal elements
-  ei = 1.;                            // Upper and lower diagonal elements
   m_v_specsol = new double[m_n];      // Special solution
   b_tilde_spec = new double[m_n];     // Right hand side of equation
   v_analytic = new double[m_n];       // Analytic solution

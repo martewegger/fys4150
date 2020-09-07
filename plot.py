@@ -52,7 +52,7 @@ def plot_rel_errors():
     plt.xlabel('$log_{10}(h)$');plt.ylabel('$log_{10}(\\varepsilon$)')
     plt.savefig('max_errors.png')
     plt.show()
-plot_rel_errors()
+#plot_rel_errors()
 
 def error():
     rel_error=np.abs((LU-analytic)/analytic)
@@ -81,4 +81,4 @@ def c():
 
     plt.savefig('c.png')
 
-#c()
+c()

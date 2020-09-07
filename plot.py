@@ -74,6 +74,7 @@ def c():
     plt.plot(n,gen, c = 'k', lw = 0.8, ls = 'dashed', label = 'General algo')
     plt.plot(n[:4],LU[:4], c = 'k', lw = 0.8, ls = 'dotted', label = 'LU algo')
     plt.xlabel('Number of steps')
+    plt.ylabel('CPU time [ms]')
     plt.xscale('log')
     plt.yscale('log')
     plt.legend()

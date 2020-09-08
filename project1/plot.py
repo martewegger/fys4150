@@ -63,7 +63,7 @@ def error():
 #error()
 
 def c():
-    filename = 'c.txt'
+    filename = 'CPU_times.txt'
     gen, spec, LU = np.transpose(np.loadtxt(filename))
     n = np.array((1,2,3,4,5,6))
     n = np.array((1e1,1e2,1e3,1e4,1e5,1e6))

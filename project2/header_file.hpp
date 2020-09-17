@@ -13,11 +13,12 @@ using namespace arma;
 
 class Class_name {
 private:
-  double x0;
+  double m_max;
   double *m_x;
   int m_n;
   ofstream m_ofile; //outfile
   vec u_LU;
+  mat m_A;
 
 public:
   void Initialize(int n,int cond);

@@ -11,19 +11,22 @@
 using namespace std;
 using namespace arma;
 
-double f(double xi);
 
 
 
 int main(int argc, char const *argv[]) {
   //Parameters
-  int n = 1000;
+  int n = 10;
   int cond=100000;
   string filename = "data.txt";
   //string filename = "data_1000.txt";
 
 
-  Class_Poisson_Dirichlet my_solver; //initiate class
+  Class_name my_solver; //initiate class
+  my_solver.Initialize(n);
+  my_solver.Solver();
+  my_solver.Eigenstuff_func();
+  my_solver.Write_to_file(filename);
 
 
   return 0;

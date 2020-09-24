@@ -17,7 +17,7 @@ private:
   int m_n;
   ofstream m_ofile; //outfile
   mat m_A, m_S, m_eigvecs;
-  vec m_eigvals_init , m_eigvals;
+  vec m_eigvals_init , m_eigvals, m_eigvals_anal;
 
 
 public:
@@ -30,6 +30,7 @@ public:
   void test_eigvals();
   void test_eigvecs();
   void rel_err_rho_max(string outfilename);
+  void rel_err_N(string outfilename);
 };
 
 #endif

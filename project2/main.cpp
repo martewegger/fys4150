@@ -24,11 +24,13 @@ double omega_r = 0.;
 
 int main(int argc, char *argv[]) {
   //Parameters
-  int n = 350;
+  //int n = 350;
   string filename = "data.txt";
   //string filename = "data_1000.txt";
   double rho_max = atof(argv[1]); //vil at omega_r skal bli tatt som et argument
   string outfilename = argv[2];
+
+  int n = atol(argv[3]);
 
 
   Class_name my_solver; //initiate class
@@ -36,7 +38,8 @@ int main(int argc, char *argv[]) {
   my_solver.Solver();
   my_solver.Unit_test();
   //my_solver.Write_to_file(filename);
-  my_solver.rel_err_rho_max(outfilename);
+  //my_solver.rel_err_rho_max(outfilename);
+  my_solver.rel_err_N(outfilename);
   return 0;
 }
 

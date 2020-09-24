@@ -14,10 +14,11 @@ using namespace arma;
 class Class_name {
 private:
   double m_max, m_k, m_l,a,d, m_x0, m_xn, m_h, m_d,m_a;
-  double *m_eigenvalue, *m_eigenvector;
   int m_n;
   ofstream m_ofile; //outfile
-  mat m_A,m_S;
+  mat m_A, m_S, m_eigenvector;
+  vec m_eigvals_init , m_eigvals;
+
 
 public:
   void Initialize(int n);

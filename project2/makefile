@@ -8,4 +8,4 @@ execute:
 	./main.out
 
 plot:
-	python3 plot.py
+	python3 main.py

@@ -31,15 +31,6 @@ void Class_name::Initialize(int n, double V(double rho_i, double omega_r), doubl
   }
   m_A(m_n-1,m_n-1) = d + V(rho_n, omega_r);     // the lower right value has to be filled outsite the loop
   eig_sym(m_eigvals_init, m_A);
-
-  // calculating othe analytic eigenvalues
-  m_eigvals_anal = vec(m_n);
-  for (int i = 0; i < m_n; i++){
-    double rho_i = rho0 + i*h;
-    m_eigvals_anal(i) = d + V(rho_i, omega_r);
-  }
-  //cout << m_A << endl;
-
 }
 
 // Function for solving the general case:
@@ -156,34 +147,26 @@ void Class_name::rel_err_rho_max(string outfilename){
   lambda(2) = 11.;
   lambda(3) = 15.;
   double acum_rel_err = 0;
-  for (int i = 0; i < 4; i++){
-    acum_rel_err += fabs((lambda(i)-m_eigvals(i))/lambda(i));
+  double rel_err = 0;
   ofstream ofile;
   ofile.open(outfilename);
-  ofile << setw(15) << acum_rel_err;
-  ofile.close();
+  for (int i = 0; i < 4; i++){
+    rel_err = fabs((lambda(i)-m_eigvals(i))/lambda(i));
+    acum_rel_err += rel_err;
+    ofile << setw(15) << rel_err<< endl;
   }
+  ofile << setw(15) << acum_rel_err<< endl;
+  ofile.close();
 }
 
 void Class_name::rel_err_N(string outfilename){
   double tol = 1E-4;
-  int err_count = 0;
-  vec lambda(4);
-  lambda(0) = 3.;
-  lambda(1) = 7.;
-  lambda(2) = 11.;
-  lambda(3) = 15.;
-  for (int i = 0; i < 4; i++){
-    double diff = fabs(m_eigvals(i)-lambda(i));
-    //cout << "eigenvalue:  " << m_eigvals_init(i) << endl;
-    if (diff > tol){
-      err_count++;
-    }
+  double rel_err = fabs((m_eigvals(0)-lambda)/lambda);
+  cout << " diff " << rel_err << endl;
   ofstream ofile;
   ofile.open(outfilename);
-  ofile << setw(15) << err_count;
+  ofile << setw(15) << rel_err;
   ofile.close();
-  }
 }
 
 

@@ -32,6 +32,8 @@ int main(int argc, char *argv[]) {
 
   int n = atol(argv[3]);
 
+  double lambda = atof(argv[4]);
+
 
   Class_name my_solver; //initiate class
   my_solver.Initialize(n, pot_1e, omega_r, rho_max);
@@ -39,7 +41,7 @@ int main(int argc, char *argv[]) {
   my_solver.Unit_test();
   //my_solver.Write_to_file(filename);
   //my_solver.rel_err_rho_max(outfilename);
-  my_solver.rel_err_N(outfilename);
+  my_solver.rel_err_N(outfilename, lambda);
   return 0;
 }
 

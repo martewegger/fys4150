@@ -31,6 +31,11 @@ void Class_name::Initialize(int n, double V(double rho_i, double omega_r), doubl
   }
   m_A(m_n-1,m_n-1) = d + V(rho_n, omega_r);     // the lower right value has to be filled outsite the loop
   eig_sym(m_eigvals_init, m_A);
+  m_lambda = vec(4);
+  m_lambda(0) = 3.;
+  m_lambda(1) = 7.;
+  m_lambda(2) = 11.;
+  m_lambda(3) = 15.;
 }
 
 // Function for solving the general case:
@@ -90,7 +95,7 @@ void Class_name::Solver(){
   m_max = 1.;
   m_tolerance = 1.0E-10;
   int iterations = 0;
-  int maxiter = 1E5;
+  int maxiter = 1E4;
   while ( m_max > m_tolerance && iterations <= maxiter) {
     Offdiag();
     Jacobi_rotate();
@@ -141,17 +146,12 @@ void Class_name::Unit_test(){
 }
 
 void Class_name::rel_err_rho_max(string outfilename){
-  vec lambda(4);
-  lambda(0) = 3.;
-  lambda(1) = 7.;
-  lambda(2) = 11.;
-  lambda(3) = 15.;
   double acum_rel_err = 0;
   double rel_err = 0;
   ofstream ofile;
   ofile.open(outfilename);
   for (int i = 0; i < 4; i++){
-    rel_err = fabs((lambda(i)-m_eigvals(i))/lambda(i));
+    rel_err = fabs((m_lambda(i)-m_eigvals(i))/m_lambda(i));
     acum_rel_err += rel_err;
     ofile << setw(15) << rel_err<< endl;
   }
@@ -159,14 +159,13 @@ void Class_name::rel_err_rho_max(string outfilename){
   ofile.close();
 }
 
-void Class_name::rel_err_N(string outfilename){
-  double tol = 1E-4;
-  double rel_err = fabs((m_eigvals(0)-lambda)/lambda);
-  cout << " diff " << rel_err << endl;
+void Class_name::rel_err_N(string outfilename, int indx){
+  double rel_err = fabs((m_eigvals(indx)-m_lambda(indx))/m_lambda(indx));
   ofstream ofile;
   ofile.open(outfilename);
   ofile << setw(15) << rel_err;
   ofile.close();
+  cout << "2"<< endl;
 }
 
 

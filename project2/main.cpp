@@ -29,19 +29,22 @@ int main(int argc, char *argv[]) {
   //string filename = "data_1000.txt";
   double rho_max = atof(argv[1]); //vil at omega_r skal bli tatt som et argument
   string outfilename = argv[2];
-
   int n = atol(argv[3]);
+  int indx = atol(argv[4]);
+  double omega_r = atof(argv[5]);
 
-  double lambda = atof(argv[4]);
-
-
+  cout << "1"<< endl;
   Class_name my_solver; //initiate class
-  my_solver.Initialize(n, pot_1e, omega_r, rho_max);
+  my_solver.Initialize(n, Buck_beam, omega_r, rho_max);
+  //my_solver.Initialize(n, pot_1e, omega_r, rho_max);
+  //my_solver.Initialize(n, pot_1e, omega_r, rho_max);
+  //my_solver.Initialize(n, pot_1e, omega_r, rho_max);
   my_solver.Solver();
   my_solver.Unit_test();
   //my_solver.Write_to_file(filename);
   //my_solver.rel_err_rho_max(outfilename);
-  my_solver.rel_err_N(outfilename, lambda);
+
+  //my_solver.rel_err_N(outfilename, indx);
   return 0;
 }
 

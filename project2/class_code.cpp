@@ -16,7 +16,7 @@ using namespace arma;
 // Function initializing variables
 void Class_name::Initialize(int n, double V(double rho_i, double omega_r), double omega_r, double rho_max){
   m_n = n;
-  double rho0 = 0.;                            // Starting point
+  double rho0 = 0.01;                            // Starting point
   double rho_n = rho_max;                        // End point
   double h = (rho_n - rho0)/(m_n+1);              // Steplength
   double a = -1./(h*h);
@@ -127,7 +127,6 @@ void Class_name::test_eigvecs(){
     for (int j = i+1; j < m_n; j++){
       vec vec2 = m_eigvecs.col(j);
       double prod = dot(vec1,vec2);
-      //cout << prod << endl;
       if (prod > m_tolerance){
         cout << "HeR eR dEt FuCk!!" << endl;
         test_crit++;
@@ -159,14 +158,16 @@ void Class_name::rel_err_rho_max(string outfilename){
   ofile.close();
 }
 
-void Class_name::rel_err_N(string outfilename, int indx){
+void Class_name::rel_err(string outfilename, int indx){
   double rel_err = fabs((m_eigvals(indx)-m_lambda(indx))/m_lambda(indx));
   ofstream ofile;
   ofile.open(outfilename);
   ofile << setw(15) << rel_err;
   ofile.close();
-  cout << "2"<< endl;
+
 }
+
+
 
 
 // Function writing results to file

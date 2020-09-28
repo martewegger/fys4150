@@ -2,6 +2,7 @@ import os
 import sys
 import matplotlib.pyplot as plt
 import numpy as np
+plt.rcParams['font.size'] = 16
 
 
 rho_max = np.linspace(3,6,10)
@@ -14,6 +15,7 @@ cpp_codes = "main.cpp class_code.cpp"
 compiler_flags = "-larmadillo -O2"
 executeable = "main.out"
 run = "./main.out"
+lambda_list = np.array((3,7,11,15))
 
 def find_rho_max(run=False):
     n=350
@@ -38,7 +40,7 @@ def find_rho_max(run=False):
     plt.plot(rho_max[indx], acum_rel_err[indx], 'ro', label='(%.2f, %.2f)' % (rho_max[indx],acum_rel_err[indx]))
     plt.xlabel('$\\rho_{max}$')
     plt.ylabel('Relative error')
-    plt.legend()
+    plt.legend(fontsize=16)
     plt.savefig('max_rel_err.png')
     #plt.show()
 
@@ -70,6 +72,7 @@ def find_rho_max(run=False):
 #find_rho_max(run=True) #hash ut denne
 
 def find_optimal_N(run_cpp = False): #finne optal n for hver lam.
+    omega_r = 0
     plt.figure();plt.title('Relative error as a function of matrix size, $N$')
     rho_vals = np.load('rho_values.npy') #dette er rhomax verdiier for ulike lam og acc
     filename = "n_analysis.txt"
@@ -95,7 +98,9 @@ def find_optimal_N(run_cpp = False): #finne optal n for hver lam.
         while err >tol:
             n_list.append(n)
             os.system("echo running for n= %d" % n)
-            os.system(" ".join([run, str(rho_max), str(filename), str(n), str(i)]))
+            os.system(" ".join([run, str(rho_max), str(filename), str(n), str(i), str(omega_r)]))
+            err = 0
+
             err = np.loadtxt(filename) #cpp leser error for gitt/hver n. den skal være under 1e-4. ta var på for å plotte? må appende. lage en liste, for å lagre disse verdiene i.!
             err_list.append(err)
             print("error= ", err)
@@ -110,14 +115,40 @@ def find_optimal_N(run_cpp = False): #finne optal n for hver lam.
         print("Possible success at n = %d" % (n-10))
         print("relative error= %g" %  err)
 
-        plt.plot(n_list,err_list, '.', label='$lambda_%d$' % (i+1))
+        plt.plot(n_list,err_list, '.', label='$\\lambda_%d$' % (i+1))
     plt.plot([n_min,n_max], [1e-4,1e-4], c='k', label='tolerance')
-    plt.xlabel('$n$')
+    plt.xlabel('$N$')
     plt.ylabel('Relative error')
-    plt.legend()
+    plt.legend(fontsize=16)
     plt.savefig('n_analysis.png')
 
     os.system(" ".join(["rm", str(filename)]))
 
-find_optimal_N(run_cpp=True)
-#find_optimal_N()
+
+#find_optimal_N(run_cpp=True)
+
+
+def vary_w_r():
+    n=350
+    colors = np.array(('r', 'b', 'g', 'orange'))
+    plt.figure(figsize=(10,10));plt.title('Relative error for different $\\omega_r$')
+    w_r = np.array((0.01, 0.5, 1, 5))
+    os.system("echo compiling...")
+    os.system(" ".join(["c++", "-o", executeable, cpp_codes, compiler_flags]))
+    filename = 'omega_test.txt'
+    rho_vals = np.load('rho_values.npy')
+    os.system("echo running omega_r analysis")
+    for i in range(len(lambda_list)):
+        rho_max = rho_vals[i]
+        err_list = []
+        for j in range(len(w_r)):
+            os.system(" ".join([run, str(rho_max), str(filename), str(n), str(i), str(w_r[j])]))
+            err_list.append(np.loadtxt(filename))
+        plt.plot(w_r,err_list, c = colors[i], label='$\\lambda_%d$' % (i+1))
+        plt.plot(w_r,err_list, c = colors[i])
+    plt.xlabel('$\\omega_r$')
+    plt.ylabel('Relative error')
+    plt.legend(fontsize=16)
+    plt.savefig('test_w_r.png')
+    #os.system(" ".join(["rm", str(filename)]))
+vary_w_r()

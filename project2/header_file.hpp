@@ -30,7 +30,7 @@ public:
   void test_eigvals();
   void test_eigvecs();
   void rel_err_rho_max(string outfilename);
-  void rel_err_N(string outfilename, int indx);
+  void rel_err(string outfilename, int indx);
 };
 
 #endif

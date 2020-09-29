@@ -4,6 +4,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 plt.rcParams['font.size'] = 16
 
+#IMPORTANT: The two first functions use the potential for 1 electron. The last function use the potential for 2 electrons. In addition to turning the function on in this python script, the corresponding call to the «initialize» function on main.cpp has to be unhashed.
+
 
 rho_max = np.linspace(3,6,10)
 acum_rel_err = np.zeros(len(rho_max))
@@ -17,6 +19,9 @@ executeable = "main.out"
 run = "./main.out"
 lambda_list = np.array((3,7,11,15))
 
+
+
+# The call «my_solver.rel_err_rho_max(outfilename);» in main.cpp has to be unhashed before running this function.
 def find_rho_max(run=False):
     n=350
     if run==True:
@@ -42,7 +47,7 @@ def find_rho_max(run=False):
     plt.ylabel('Relative error')
     plt.legend(fontsize=16)
     plt.savefig('max_rel_err.png')
-    #plt.show()
+
 
     plt.figure();plt.title('Relative error as a function of $\\rho_{max}$')
 
@@ -66,10 +71,15 @@ def find_rho_max(run=False):
     plt.legend()
     plt.savefig('rel_err_lmbda.png')
 
-    os.system("rm max_rel_err.txt") # removing the txt file created.
-    final = np.array((rho_max[indx1], rho_max[indx2], rho_max[indx3], rho_max[indx4], rho_max[indx])) #index tilsvarer rhomax for acc, de andre tilsvarer rhomax for lam1, lam2 osv.
+    os.system("rm max_rel_err.txt")
+    final = np.array((rho_max[indx1], rho_max[indx2], rho_max[indx3], rho_max[indx4], rho_max[indx]))
     np.save('rho_values.npy', final)
-#find_rho_max(run=True) #hash ut denne
+#find_rho_max(run=True)
+
+
+
+# For the two next functions, the «my_solver.rel_err(outfilename, indx);» call in main.cpp has to be unhashed.
+
 
 def find_optimal_N(run_cpp = False): #finne optal n for hver lam.
     omega_r = 0
@@ -80,7 +90,6 @@ def find_optimal_N(run_cpp = False): #finne optal n for hver lam.
         os.system("echo compiling...")
         os.system(" ".join(["c++", "-o", executeable, cpp_codes, compiler_flags]))
 
-    #err_list = []
     err = 1
     tol = 1e-4
     n_max = 0
@@ -90,22 +99,17 @@ def find_optimal_N(run_cpp = False): #finne optal n for hver lam.
         n_list = []
         err_list = []
         n_min = 450
-        n = n_min #teste for disse
+        n = n_min
         err = 1
-        rho_max = rho_vals[i] #finne optimal n for hver rhomax
-        #n_list[i] (_rhomax1) = [] #lage en liste for hver rho-max
+        rho_max = rho_vals[i]
         os.system("echo evaluating rho_max= %f for lambda%d" % (rho_max, i+1))
         while err >tol:
             n_list.append(n)
             os.system("echo running for n= %d" % n)
             os.system(" ".join([run, str(rho_max), str(filename), str(n), str(i), str(omega_r)]))
-            err = 0
-
-            err = np.loadtxt(filename) #cpp leser error for gitt/hver n. den skal være under 1e-4. ta var på for å plotte? må appende. lage en liste, for å lagre disse verdiene i.!
+            err = np.loadtxt(filename)
             err_list.append(err)
-            print("error= ", err)
-            #må lagre n-verdier.
-            #liste.append(n) #en liste jeg lager)
+            print("Relative error= ", err)
             n += 10
             if n>=650:
                 print(" No success, but break cause n too big..")
@@ -121,7 +125,6 @@ def find_optimal_N(run_cpp = False): #finne optal n for hver lam.
     plt.ylabel('Relative error')
     plt.legend(fontsize=16)
     plt.savefig('n_analysis.png')
-
     os.system(" ".join(["rm", str(filename)]))
 
 
@@ -150,5 +153,5 @@ def vary_w_r():
     plt.ylabel('Relative error')
     plt.legend(fontsize=16)
     plt.savefig('test_w_r.png')
-    #os.system(" ".join(["rm", str(filename)]))
-vary_w_r()
+    os.system(" ".join(["rm", str(filename)]))
+#vary_w_r()

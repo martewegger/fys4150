@@ -15,11 +15,6 @@ double Buck_beam(double rho_i, double omega_r);
 double pot_1e(double rho_i, double omega_r);
 double pot_2e(double rho_i, double omega_r);
 
-//double omega_r = 0.01;
-//double omega_r = 0.5;
-//double omega_r = 1.;
-//double omega_r = 5.;
-
 double omega_r = 0.;
 int main(int argc, char *argv[]) {
   //Parameters
@@ -33,19 +28,16 @@ int main(int argc, char *argv[]) {
   double omega_r = atof(argv[5]);
 
   Class_name my_solver; //initiate class
-  //my_solver.Initialize(n, Buck_beam, omega_r, rho_max);
+  my_solver.Initialize(n, Buck_beam, omega_r, rho_max);
   //my_solver.Initialize(n, pot_1e, omega_r, rho_max);
-
-
-  my_solver.Initialize(n, pot_2e, omega_r, rho_max);
+  //my_solver.Initialize(n, pot_2e, omega_r, rho_max);
 
   my_solver.Solver();
   my_solver.Unit_test();
 
   //my_solver.Write_to_file(filename);
   //my_solver.rel_err_rho_max(outfilename);
-
-  my_solver.rel_err(outfilename, indx);
+  //my_solver.rel_err(outfilename, indx);
   return 0;
 }
 

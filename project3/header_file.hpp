@@ -13,24 +13,20 @@ using namespace arma;
 
 class Class_name {
 private:
-  double m_max, m_k, m_l, m_tolerance;
-  int m_n;
-  ofstream m_ofile; //outfile
-  mat m_A, m_S, m_eigvecs;
-  vec m_eigvals_init , m_eigvals, m_eigvals_anal, m_lambda;
-
+  double m_x0, m_y0;
+  double *m_x, *m_y;
+  int m_N;
 
 public:
-  void Initialize(int n, double V(double rho_i, double omega_r), double omega_r, double rho_max);
-  void Offdiag();
-  void Solver();
+  void Initialize(int n, double V(double rho_i));
+  void solve(int N, double T_end, double method, double accel_func(double M, double pos_obj1, double pos_obj2, int beta));
   void Write_to_file(string filename);
-  void Jacobi_rotate();
-  void Unit_test();
-  void test_eigvals();
-  void test_eigvecs();
-  void rel_err_rho_max(string outfilename);
-  void rel_err(string outfilename, int indx);
+};
+
+class Methods {
+public:
+  double ForwardEuler(double pos_obj1, double pos_obj2, double vel, double h, double acceleration(double M, double  pos_obj1, double pos_obj2, int beta));
+  double Verlet(double pos_obj1, double pos_obj2, double vel, double h, double acceleration(double M, double  pos_obj1, double pos_obj2, int beta));
 };
 
 #endif

@@ -20,9 +20,12 @@ double T_end = 1.1;
 int N = 1e6;
 
 int main(int argc, char *argv[]) {
-  string filename = "Tellus.txt";
+  int N = atol(argv[1]);
+  //string filename = "Tellus.txt";
+  string filename = argv[2];
+  double vy0 = atof(argv[3]);
   Class_name my_solver;
-  my_solver.Initialize(N);
+  my_solver.Initialize(N, vy0);
   my_solver.Solve(T_end, accel_func);
   //my_solver.Solve(T_end, my_solver.ForwardEuler, accel_func);
   my_solver.Write_to_file(filename);

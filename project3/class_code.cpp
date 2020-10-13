@@ -14,7 +14,7 @@ using namespace std;
 using namespace arma;
 
 // Function initializing variables
-void Class_name::Initialize(int N){
+void Class_name::Initialize(int N, double vy0){
   //2459134.500000000 = A.D. 2020-Oct-12
 
   double x0 = 9.384887914865430E-01;   //AU
@@ -30,8 +30,7 @@ void Class_name::Initialize(int N){
   m_x(0) = 1.;  //test case
   m_y(0) = 0.;  //test case
   m_vx0 = 0.;   //test case
-  m_vy0 = 6.5;   //test case
-
+  m_vy0 = vy0;   //test case
 }
 
 vec Class_name::ForwardEuler(vec pos_obj1, vec pos_obj2, vec vel, double h, double M, int beta, vec accel_func(double M, vec pos_obj1, vec pos_obj2, int beta)){

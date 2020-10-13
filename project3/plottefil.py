@@ -1,7 +1,26 @@
 import matplotlib.pyplot as plt
 import numpy as np
+import os
 plt.rcParams['font.size'] = 16
 
+def compile():
+    cpp_codes = "main.cpp class_code.cpp"
+    compiler_flags = "-larmadillo -O2"
+    executeable = "main.out"
+
+    os.system("echo compiling...")
+    os.system(" ".join(["c++", "-o", executeable, cpp_codes, compiler_flags]))
+
+
+def run_func(v0, N):
+    filename = "Tellus.txt"
+    run = "./main.out"
+    print('Running for x0, y0 = (1,0), vy0 = %f' % v0)
+    os.system(" ".join([run, str(N), str(filename),str(v0)]))
+
+#compile()
+#run_func(v0=6.294737, N=1e5)
+run_func(v0=8.8, N=1e5)
 
 data = np.array(np.loadtxt("Tellus.txt")) #read the positions from file
 
@@ -36,8 +55,8 @@ plt.plot(pluto_x, pluto_y, label="Pluto")
 """
 plt.plot(sun_x, sun_y, "o", c="yellow", label="Sun")
 #plt.axis("equal")
-plt.xlim(-1.5,1.5)
-plt.ylim(-1.5,1.5)
+#plt.xlim(-1.5,1.5)
+#plt.ylim(-1.5,1.5)
 plt.xlabel('X')
 plt.ylabel('Y')
 plt.legend(fontsize=16)

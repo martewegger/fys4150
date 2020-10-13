@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 import numpy as np
 import os
-plt.rcParams['font.size'] = 16
+plt.rcParams['font.size'] = 14
 
 def compile():
     cpp_codes = "main.cpp class_code.cpp"

@@ -83,7 +83,7 @@ vec Class_name::Verlet(vec pos_obj1, vec pos_obj2, vec vel, double h, double M, 
 }
 
 void Class_name::Solve(double T_end, vec accel_func(double M, vec pos_obj1, vec pos_obj2, int beta)){
-  double h = T_end/m_N;
+  double h = T_end/(m_N-1);
   double M = 1.;
   vec old_vel;
   old_vel = vec(2, fill::zeros);

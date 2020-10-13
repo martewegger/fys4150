@@ -13,20 +13,20 @@ using namespace arma;
 
 class Class_name {
 private:
-  double m_x0, m_y0;
-  double *m_x, *m_y;
+  double m_vx0, m_vy0;
+  vec m_x, m_y;
   int m_N;
 
 public:
-  void Initialize(int n, double V(double rho_i));
-  void solve(int N, double T_end, double method, double accel_func(double M, double pos_obj1, double pos_obj2, int beta));
+  void Initialize(int N);
+  void solve(double T_end, double method, vec accel_func(double M, vec pos_obj1, vec pos_obj2, int beta));
   void Write_to_file(string filename);
 };
 
 class Methods {
 public:
-  double ForwardEuler(double pos_obj1, double pos_obj2, double vel, double h, double acceleration(double M, double  pos_obj1, double pos_obj2, int beta));
-  double Verlet(double pos_obj1, double pos_obj2, double vel, double h, double acceleration(double M, double  pos_obj1, double pos_obj2, int beta));
+  vec ForwardEuler(vec pos_obj1, vec pos_obj2, vec vel, double h, double M, int beta, vec acceleration(double M, vec  pos_obj1, vec pos_obj2, int beta));
+  vec Verlet(vec pos_obj1, vec pos_obj2, vec vel, double h, double M, int beta, vec acceleration(double M, vec  pos_obj1, vec pos_obj2, int beta));
 };
 
 #endif

@@ -19,35 +19,46 @@ using namespace arma;
 void Class_name::Initialize(int N){
   //2459134.500000000 = A.D. 2020-Oct-12
 
-  m_x0 = 9.384887914865430E-01;   //AU
-  m_y0 = 3.287443922398884E-01;   //AU
-  double vx0=-5.838932265148174E-0;    //AU/day
-  double vy0= 1.621801974258600E-02;   //AU/day
+  double x0 = 9.384887914865430E-01;   //AU
+  double y0 = 3.287443922398884E-01;   //AU
+  m_vx0=-5.838932265148174E-0;    //AU/day
+  m_vy0= 1.621801974258600E-02;   //AU/day
   m_N = N;
-  m_x = new double[m_N];
-  m_y = new double[m_N];
+  m_x = vec(m_N, fill::zeros);
+  m_y = vec(m_N, fill::zeros);
 
-
-  m_x[0] = m_x0;
-  m_y[0] = m_y0;
-  m_x[0] = 1.;
-  m_y[0] = 0.;
+  m_x(0) = x0;
+  m_y(0) = y0;
+  m_x(0) = 1.;  //test case
+  m_y(0) = 0.;  // test case
 }
 
 
-
-void Class_name::solve(int N, double T_end, double method, double accel_func){
-  double h = T_end/N;
+void Class_name::solve(double T_end, double method, double accel_func){
+  double h = T_end/m_N;
   double M_solar = 1.;
-  double old_vel = [m_vx0, m_vy0];
-  double sun_pos = [0,0];
+
+  vec old_vel;
+  result = vec(2, fill::zeros);
+  old_vel(0) = m_vx0;
+  old_vel(1) = m_vy0;
+
+  vec sun_pos;
+  sun_pos = vec(2, fill:zeros);
+
   int beta = 2;
+  vec pos_obj1;
+  pos_obj1 = vec(2, fill::zeros);
+
   for (i=0;i<m_N-1; i++){
-    double pos_obj1 = [m_x[i], m_y[i]];
-    double new_pos, new_vel = method(pos_obj1, sun_pos, old_vel, h, M_solar, beta, accel_func);
-    m_x[i+1] = new_pos[0];
-    m_y[i+1] = new_pos[1];
-    old_vel = new_vel;
+    pos_obj1(0) = m_x(i);
+    pos_obj1(1) = m_y(i);
+
+    double new_x, new_y, new_vx, new_vy = method(pos_obj1, sun_pos, old_vel, h, M_solar, beta, accel_func);
+    m_x(i+1) = new_x;
+    m_y(i+1) = new_y;
+    old_vel(0) = new_vx;
+    old_vel(1) = new_vy;
     cout << new_pos << endl;
   }
 }

@@ -8,40 +8,53 @@
 #include <string>
 #include <armadillo>
 #define pi 3.14159265359
-#define G = 4 * pi*pi
+#define G 4. * pi*pi
 
 
 using namespace std;
 using namespace arma;
 
 // Function initializing variables
-double Methods::ForwardEuler(double pos_obj1, double pos_obj2, double vel, double h, double M, int beta, double acceleration(double M, double  pos_obj1, double pos_obj2, int beta)){
-  double old_vx, old_vy = vel;
+vec Methods::ForwardEuler(vec pos_obj1, vec pos_obj2, vec vel, double h, double M, int beta, double acceleration(double M, double  pos_obj1, double pos_obj2, int beta)){
+  double old_vx = vel(0);
+  double old_vy = vel(1);
   double old_x, old_y = pos_obj1;
-  double M_solar = 1.;
-  double ax, ay = acceleration(M_solar, pos_obj1, pos_obj2);
-  double new_x = old_x+h*old_vx;
+  double ax, ay = acceleration(M, pos_obj1, pos_obj2, beta);
+  double new_x = old_x+h*old_vx+h*h*ax;
   double new_vx = old_vx+h*ax;
 
-  double new_y = old_y+h*old_vy;
+  double new_y = old_y+h*old_vy + h*h*ay;
   double new_vy = old_vy+h*ay;
 
-  return [new_x, new_y], [new_vx, new_vy];
+  vec result;
+  result = vec(4, fill::zeros);
+  result(0) = new_x;
+  result(1) = new_y;
+  result(2) = new_vx;
+  result(3) = new_vy;
+  return result;
 }
 
-double Methods::Verlet(double pos_obj1, double pos_obj2, double vel, double h, double M, int beta, double acceleration(double M, double  pos_obj1, double pos_obj2, int beta)){
+vec Methods::Verlet(double pos_obj1, double pos_obj2, double vel, double h, double M, int beta, double acceleration(double M, double  pos_obj1, double pos_obj2, int beta)){
   double old_vx, old_vy = vel;
-  double M_solar = 1.;
   double old_x, old_y = pos_obj1;
-  double old_ax, old_ay = acceleration(M_solar, pos_obj1, pos_obj2, beta);
+  double old_ax, old_ay = acceleration(M, pos_obj1, pos_obj2, beta);
 
   double new_x = old_x + h*old_vx +  h/2*old_ax;
   double new_y = old_y + h*old_vy +  h/2*old_ay;
-
-  double new_ax, new_ay = acceleration(M, [new_x,new_y], pos_obj2);
+  pos_obj1[0] = new_x;
+  pos_obj1[1] = new_y; //reusing pos_obj for new position
+  double new_ax, new_ay = acceleration(M, pos_obj1, pos_obj2);
 
   double new_vx = old_vx + h/2*(new_ax+old_ax);
   double new_vy = old_vy + h/2*(new_ay+old_ay);
-
-  return [new_x, new_y], [new_vx, new_vy];
+  //double *result;
+  //result = new double[4];
+  vec result;
+  result = vec(4, fill::zeros);
+  result(0) = new_x;
+  result(1) = new_y;
+  result(2) = new_vx;
+  result(3) = new_vy;
+  return result;
 }

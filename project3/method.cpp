@@ -58,3 +58,13 @@ vec Methods::Verlet(double pos_obj1, double pos_obj2, double vel, double h, doub
   result(3) = new_vy;
   return result;
 }
+
+
+
+class Methods {
+private:
+  double test;
+public:
+  vec ForwardEuler(vec pos_obj1, vec pos_obj2, vec vel, double h, double M, int beta, vec acceleration(double M, vec  pos_obj1, vec pos_obj2, int beta));
+  vec Verlet(vec pos_obj1, vec pos_obj2, vec vel, double h, double M, int beta, vec acceleration(double M, vec  pos_obj1, vec pos_obj2, int beta));
+};

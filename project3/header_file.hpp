@@ -20,13 +20,11 @@ private:
 public:
   void Initialize(int N);
   void solve(double T_end, double method, vec accel_func(double M, vec pos_obj1, vec pos_obj2, int beta));
+  vec ForwardEuler(vec pos_obj1, vec pos_obj2, vec vel, double h, double M, int beta, vec acceleration(double M, vec  pos_obj1, vec pos_obj2, int beta));
+  vec Verlet(vec pos_obj1, vec pos_obj2, vec vel, double h, double M, int beta, vec acceleration(double M, vec  pos_obj1, vec pos_obj2, int beta));
   void Write_to_file(string filename);
 };
 
-class Methods {
-public:
-  vec ForwardEuler(vec pos_obj1, vec pos_obj2, vec vel, double h, double M, int beta, vec acceleration(double M, vec  pos_obj1, vec pos_obj2, int beta));
-  vec Verlet(vec pos_obj1, vec pos_obj2, vec vel, double h, double M, int beta, vec acceleration(double M, vec  pos_obj1, vec pos_obj2, int beta));
-};
+
 
 #endif

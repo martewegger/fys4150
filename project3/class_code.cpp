@@ -41,11 +41,12 @@ void Class_name::solve(int N, double T_end, double method, double accel_func){
   double M_solar = 1.;
   double old_vel = [m_vx0, m_vy0];
   double sun_pos = [0,0];
+  int beta = 2;
   for (i=0;i<m_N-1; i++){
     double pos_obj1 = [m_x[i], m_y[i]];
-     double new_pos, new_vel = method(pos_obj1, sun_pos, old_vel, h, accel_func);
-    x[i+1] = new_pos[0];
-    y[i+1] = new_pos[1];
+    double new_pos, new_vel = method(pos_obj1, sun_pos, old_vel, h, M_solar, beta, accel_func);
+    m_x[i+1] = new_pos[0];
+    m_y[i+1] = new_pos[1];
     old_vel = new_vel;
     cout << new_pos << endl;
   }

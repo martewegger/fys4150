@@ -15,4 +15,5 @@ def run_func(filename="outfile.txt", vy0=np.load("optimal_v0.npy"),vx0=0, dt=np.
     os.system(" ".join([run, filename, str(vx0), str(vy0), str(dt), str(T_end), method]))
 
 if __name__ == '__main__':
-    run_func(compile = True)
+    compile_func()
+    #run_func(compile = True)

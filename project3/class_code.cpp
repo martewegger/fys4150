@@ -33,43 +33,6 @@ void Class_name::Initialize(double vx0, double vy0, double h, double T_end){
   m_vy0 = vy0;   //test case
 }
 
-<<<<<<< HEAD
-vec Class_name::ForwardEuler(vec pos_obj1, vec pos_obj2, vec vel, double h, double M, int beta, vec accel_func(double M, vec pos_obj1, vec pos_obj2, int beta)){
-  double old_vx = vel(0);
-  double old_vy = vel(1);
-  double old_x = pos_obj1(0);
-  double old_y = pos_obj1(1);
-  vec acc = accel_func(M, pos_obj1, pos_obj2, beta);
-  double new_x = old_x + h*old_vx + h*h*acc(0);
-  double new_vx = old_vx + h*acc(0);
-
-  double new_y = old_y + h*old_vy + h*h*acc(1);
-  double new_vy = old_vy + h*acc(1);
-
-  vec result;
-  result = vec(4, fill::zeros);
-  result(0) = new_x;
-  result(1) = new_y;
-  result(2) = new_vx;
-  result(3) = new_vy;
-  return result;
-}
-
-vec Class_name::Verlet(vec pos_obj1, vec pos_obj2, vec vel, double h, double M, int beta, vec accel_func(double M, vec  pos_obj1, vec pos_obj2, int beta)){
-  double old_vx = vel(0);
-  double old_vy = vel(1);
-  double old_x = pos_obj1(0);
-  double old_y = pos_obj1(1);
-
-  vec acc = accel_func(M, pos_obj1, pos_obj2, beta);
-
-  double new_x = old_x + h*old_vx +  (h*h)/2 * acc(0);
-  double new_y = old_y + h*old_vy +  (h*h)/2 * acc(1);
-  pos_obj1[0] = new_x;
-  pos_obj1[1] = new_y; //reusing pos_obj for new position
-=======
->>>>>>> 3501101b8e5956bfda0ea44932797d4d57845e01
-
 void Class_name::Solve(vec chosen_method(vec pos_obj1, vec sun_pos, vec old_vel, double h, double M, int beta, vec accel_func(double M, vec pos_obj1, vec pos_obj2, int beta)), vec accel_func(double M, vec pos_obj1, vec pos_obj2, int beta)){
   double M = 1.;
   vec old_vel;
@@ -83,18 +46,11 @@ void Class_name::Solve(vec chosen_method(vec pos_obj1, vec sun_pos, vec old_vel,
   vec pos_obj1;
   pos_obj1 = vec(2, fill::zeros);
   double new_x, new_y, new_vx, new_vy;
-<<<<<<< HEAD
 
   for (int i = 0; i < m_N-1; i++){
-=======
-  for (int i=0;i<m_N-1; i++){
-
->>>>>>> 3501101b8e5956bfda0ea44932797d4d57845e01
     pos_obj1(0) = m_x(i);
     pos_obj1(1) = m_y(i);
-
     vec result = chosen_method(pos_obj1, sun_pos, old_vel, m_h, M, beta, accel_func);
-
     m_x(i+1) = result(0);
     m_y(i+1) = result(1);
     old_vel(0) = result(2);

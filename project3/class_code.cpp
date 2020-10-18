@@ -14,8 +14,9 @@ using namespace std;
 using namespace arma;
 
 // Function initializing variables
-void Class_name::Initialize(double vx0, double vy0, double h, double T_end){
+void Class_name::Initialize(double vx0, double vy0, double h, double T_end, double beta){
   //2459134.500000000 = A.D. 2020-Oct-12
+  m_beta = beta;
   m_h = h;
   m_N = T_end/h+1;
   double x0 = 9.384887914865430E-01;   //AU
@@ -33,7 +34,7 @@ void Class_name::Initialize(double vx0, double vy0, double h, double T_end){
   m_vy0 = vy0;   //test case
 }
 
-void Class_name::Solve(vec chosen_method(vec pos_obj1, vec sun_pos, vec old_vel, double h, double M, int beta, vec accel_func(double M, vec pos_obj1, vec pos_obj2, int beta)), vec accel_func(double M, vec pos_obj1, vec pos_obj2, int beta)){
+void Class_name::Solve(vec chosen_method(vec pos_obj1, vec sun_pos, vec old_vel, double h, double M, double beta, vec accel_func(double M, vec pos_obj1, vec pos_obj2, double beta)), vec accel_func(double M, vec pos_obj1, vec pos_obj2, double beta)){
   double M = 1.;
   vec old_vel;
   old_vel = vec(2, fill::zeros);
@@ -42,21 +43,23 @@ void Class_name::Solve(vec chosen_method(vec pos_obj1, vec sun_pos, vec old_vel,
   vec sun_pos;
   sun_pos = vec(2, fill::zeros);
 
-  int beta = 2;
+  //int beta = 2;
   vec pos_obj1;
   pos_obj1 = vec(2, fill::zeros);
   double new_x, new_y, new_vx, new_vy;
-
+  cout << m_beta << endl;
   for (int i = 0; i < m_N-1; i++){
     pos_obj1(0) = m_x(i);
     pos_obj1(1) = m_y(i);
-    vec result = chosen_method(pos_obj1, sun_pos, old_vel, m_h, M, beta, accel_func);
+    vec result = chosen_method(pos_obj1, sun_pos, old_vel, m_h, M, m_beta, accel_func);
     m_x(i+1) = result(0);
     m_y(i+1) = result(1);
     old_vel(0) = result(2);
     old_vel(1) = result(3);
   }
 }
+
+
 
 
 // Function writing results to file

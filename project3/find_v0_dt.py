@@ -6,16 +6,11 @@ from run import *
 from scipy.ndimage.filters import gaussian_filter
 from scipy.signal import savgol_filter
 plt.rcParams['font.size'] = 14
-
-def compile():
-    cpp_codes = "main.cpp class_code.cpp"
-    compiler_flags = "-larmadillo -O2"
-    executeable = "main.out"
-
-    os.system("echo compiling...")
-    os.system(" ".join(["c++", "-o", executeable, cpp_codes, compiler_flags]))
+Euler = "ForwardEuler"
+Verlet = "Verlet"
 
 def find_v0():
+    compile_func()
     n = 100
     v0_array = np.linspace(6.2,6.4,n)# AU/yr
     rel_err =np.zeros(n)
@@ -23,7 +18,7 @@ def find_v0():
     for i in range(len(v0_array)):
         filename = "orbit.txt"
         print('Running for x0, y0 = (1,0), vy0 = %f' % v0_array[i])
-        run_func(filename, v0_array[i], vx0=0, dt=1e-3, T_end=1.1, method = "ForwardEuler", compile=False)
+        run_func(filename, v0_array[i], vx0=0, dt=1e-3, T_end=1.1, method = Euler, compile=False)
         x, y = np.transpose(np.loadtxt(filename))
         rel_err[i] = (np.abs(np.sum(np.sqrt(x**2+y**2) - 1)))/1
         print('Relative error = %.3f' % rel_err[i])
@@ -42,19 +37,19 @@ def find_v0():
     plt.legend()
     plt.savefig('optimal_v0.png')
     np.save('optimal_v0.npy', v0_array[optimal_indx])
-#compile()
+
 #find_v0()
 
-def find_dt():
-    compile()
+def find_dt(solver_method):
+    compile_func()
     n = 1001
     dt_array= np.linspace(1e-2,5e-4,n)
     rel_err =np.zeros(n)
-    method1 = "ForwardEuler"
+
     filename = "orbit.txt"
     for i in range(len(dt_array)):
         print('Running for x0, y0 = (1,0), dt = %f' % dt_array[i])
-        run_func(filename, np.load("optimal_v0.npy"), vx0=0, dt=dt_array[i], T_end=1.1, method =method1, compile=False)
+        run_func(filename, np.load("optimal_v0.npy"), vx0=0, dt=dt_array[i], T_end=1.1, method=solver_method, compile=False)
         x, y = np.transpose(np.loadtxt(filename))
         rel_err[i] = (np.abs(np.sum(np.sqrt(x**2+y**2) - 1)))/1
         print('Relative error = %.6f' % rel_err[i])
@@ -70,7 +65,42 @@ def find_dt():
     plt.xlabel(r'$\Delta t$')
     plt.ylabel('Relative error')
     plt.legend()
-    plt.savefig('optimal_dt_%s.png' % method1)
-    np.save('optimal_dt_%s.npy' % method1, dt_array[optimal_indx])
+    plt.savefig('optimal_dt_%s.png' % solver_method)
+    np.save('optimal_dt_%s.npy' % solver_method, dt_array[optimal_indx])
     plt.show()
-find_dt()
+
+
+#find_dt(Euler)
+#find_dt(Verlet)
+
+def time_func():
+    compile_func()
+    N = 1e5
+    T = 1.1
+    h = T/(N-1)
+    filename = "outfile.txt"
+    run_func(filename, np.load("optimal_v0.npy"), vx0=0, dt=h, T_end=T, method=Euler, compile=False)
+    Euler_time = np.loadtxt('timing.txt')
+    run_func(filename, np.load("optimal_v0.npy"), vx0=0, dt=h, T_end=1.1, method=Verlet, compile=False)
+    Verlet_time = np.loadtxt('timing.txt')
+    print('Euler t = %s' % Euler_time)
+    print('Verlet t = %s' % Verlet_time)
+
+#time_func()
+
+
+def vary_beta():
+    compile_func()
+    beta_array = np.linspace(2,3,3)
+    filename = 'outfile.txt'
+    plt.figure(figsize=(7,7))
+    print(np.load("optimal_v0.npy"))
+    for i in range(len(beta_array)):
+        run_func(filename, 5, vx0=0, dt=np.load('optimal_dt_Verlet.npy'), T_end=1.2, method=Verlet, beta = beta_array[i], compile=False)
+        x,y = np.transpose(np.loadtxt(filename))
+        plt.plot(x,y, label=r'$\beta = %.2f$' % beta_array[i])
+    plt.legend()
+    plt.savefig('vary_beta.png')
+    plt.show()
+
+vary_beta()

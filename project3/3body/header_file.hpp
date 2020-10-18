@@ -13,9 +13,10 @@ using namespace arma;
 
 class Class_name{
 private:
-    double m_vx0, m_vy0, m_h, m_beta;
-    vec m_x, m_y;
-    int m_N;
+    double m_h, m_beta;
+    vec m_x, m_y, m_vx, m_vy, m_mass;
+    int m_N, m_Nbody;
+    ofstream m_ofile;
 
 public:
     void Initialize(double vx0, double vy0, double h, double T_end, double beta);

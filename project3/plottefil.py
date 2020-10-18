@@ -22,7 +22,7 @@ def run_func(v0, N):
 #run_func(v0=6.294737, N=1e5)
 run_func(v0=8.8, N=1e5)
 
-data = np.array(np.loadtxt("Tellus.txt")) #read the positions from file
+data1 = np.loadtxt("Tellus.txt") #read the positions from file
 
 # The positions of the planets
 earth_x     = data[:,0];    earth_y     = data[:,1]

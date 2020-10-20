@@ -12,8 +12,11 @@ using namespace arma;
 
 
 int main(int argc, char *argv[]) {
-  double a = 0;
-  a+=2;
-  cout << a<< endl;
-  
+  vec a,b;
+  a=b= vec(2, fill::zeros);
+  a(0)=1;
+  a(1) =2;
+  a+=a;
+  cout << a << endl;
+
 }

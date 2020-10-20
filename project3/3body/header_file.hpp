@@ -13,14 +13,18 @@ using namespace arma;
 
 class Class_name{
 private:
-    double m_h, m_beta;
-    vec m_x, m_y, m_vx, m_vy, m_mass;
+    double m_h, m_beta, m_G;
+    vec m_x_old, m_x_new, m_y_old, m_y_new, m_vx, m_vy, m_acc, m_mass;
     int m_N, m_Nbody;
     ofstream m_ofile;
+    string m_filename;
 
 public:
-    void Initialize(double vx0, double vy0, double h, double T_end, double beta);
-    void Solve(vec chosen_method(vec pos_obj1, vec sun_pos, vec old_vel, double h, double M, double beta, vec accel_func(double M, vec pos_obj1, vec pos_obj2, double beta)), vec accel_func(double M, vec pos_obj1, vec pos_obj2, double beta));
-    void Write_to_file(string filename);
+    void Initialize(double h, double T_end, string filename, double beta);
+    void Write_to_file();
+    void diff_eq(int i, int j);
+    void Verlet();
+    void Solve();
+
 };
 #endif

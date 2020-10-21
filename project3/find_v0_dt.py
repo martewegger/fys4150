@@ -103,4 +103,13 @@ def vary_beta():
     plt.savefig('vary_beta.png')
     plt.show()
 
-vary_beta()
+#vary_beta()
+
+def run_and_plot():
+    filename = 'outfile.txt'
+    run_func(filename, np.load("optimal_v0.npy"), vx0=0, dt=np.load('optimal_dt_Verlet.npy'), T_end=12, method=Verlet, beta=2, compile=False)
+    x,y = np.transpose(np.loadtxt(filename))
+    plt.plot(x,y)
+    plt.show()
+#compile_func()
+#run_and_plot()

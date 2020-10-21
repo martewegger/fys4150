@@ -14,7 +14,7 @@ using namespace arma;
 class Class_name{
 private:
     double m_h, m_beta, m_G;
-    vec m_x_old, m_x_new, m_y_old, m_y_new, m_vx, m_vy, m_acc, m_mass;
+    vec m_x_old, m_x_new, m_y_old, m_y_new, m_vx_old, m_vy_old,m_vx_new, m_vy_new, m_acc, m_mass;
     int m_N, m_Nbody;
     ofstream m_ofile;
     string m_filename;

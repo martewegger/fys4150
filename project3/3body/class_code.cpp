@@ -21,7 +21,10 @@ void Class_name::Initialize(double h, double T_end, string filename, double beta
   m_filename = filename;
   m_Nbody = 3;
   m_beta = beta;
+  cout << "beta = "<<m_beta<<endl;
+  cout << "dt = " << h<< endl;
   m_N = T_end/h+1;
+  cout << "N = "<<m_N<<endl;
   m_h = h;
   m_G = 4. * pi*pi;
 
@@ -32,8 +35,10 @@ void Class_name::Initialize(double h, double T_end, string filename, double beta
 
   m_x_old = vec(m_Nbody, fill::zeros);
   m_y_old = vec(m_Nbody, fill::zeros);
-  m_vx = vec(m_Nbody, fill::zeros);
-  m_vy = vec(m_Nbody, fill::zeros);
+  m_vx_old = vec(m_Nbody, fill::zeros);
+  m_vy_old = vec(m_Nbody, fill::zeros);
+  m_vx_new = vec(m_Nbody, fill::zeros);
+  m_vy_new = vec(m_Nbody, fill::zeros);
 
   m_x_new = vec(m_Nbody, fill::zeros);
   m_y_new = vec(m_Nbody, fill::zeros);
@@ -43,30 +48,33 @@ void Class_name::Initialize(double h, double T_end, string filename, double beta
   m_mass = vec(m_Nbody, fill::zeros);
 
   m_mass(0) = 1.; //Solar mass
-  m_mass(1) = 5.972E24/M_sun;
-  m_mass(2) = 1.898E27/M_sun;
+  m_mass(1) = 0.;//5.972E24/M_sun;
+  m_mass(2) = 0.*1.898E27/M_sun;
+  //cout << "Jupiter mass = " << m_mass(2) << endl;
+  m_x_old(1) = 1.;//x0_earth;
+  m_y_old(1) = 0.;//y0_earth;
 
-  m_x_old(1) = x0_earth;
-  m_y_old(1) = y0_earth;
+  m_x_old(0) = 0.;//-6.078749760969366E-03;
+  m_y_old(0) = 0.;//6.440972971387628E-03;
 
-  m_x_old(0) = -6.078749760969366E-03;
-  //m_x_old(0) = 0.;
-  m_y_old(0) = 6.440972971387628E-03;
-  //m_y_old(0) = 0.;
+  m_x_old(2) = 5.;//2.530840380497989E+00;
+  m_y_old(2) = 0.;//-4.445040606335634E+00;
 
-  m_x_old(2) = 2.530840380497989E+00;
-  m_y_old(2) = -4.445040606335634E+00;
+  m_vx_old(2) = 0.;//6.464708585362312E-03* 365.; //Jupiter
+  m_vy_old(2) =2*pi/sqrt(5);//4.091363589634699E-03* 365.;
 
-  m_vx(1) = vx0_earth;
-  m_vy(1) = vy0_earth;
-  m_vx(0) = -7.307311063335453E-06* 365.; // Sun
-  //m_vx(0) = 0.;
-  m_vy(0) = -5.056308815628042E-06* 365.; // Sun
-  //m_vy(0) = 0.;
+  m_vx_old(1) =0.;// vx0_earth;
+  m_vy_old(1) =2.*pi;//vy0_earth;
+  m_vx_old(0) = 0.;//-7.307311063335453E-06* 365.; // Sun
+  m_vy_old(0) = 0.;//-5.056308815628042E-06* 365.; // Sun
 
-  m_vx(2) = 6.464708585362312E-03* 365.; //Jupiter
-  m_vy(2) = 4.091363589634699E-03* 365.;
+  //m_vx(2) = 0.;
+  //m_vy(2) = 0.;
+  //m_mass(2) = 0.;
 
+
+  m_vx_old(0) = -1./m_mass(0)*(m_mass(1)*m_vx_old(1)+m_mass(2)*m_vx_old(2));
+  m_vy_old(0) = -1./m_mass(0)*(m_mass(1)*m_vy_old(1)+m_mass(2)*m_vy_old(2));
 
   m_ofile.open(filename);
   m_ofile << setw(30) << "#Sun";
@@ -113,19 +121,29 @@ void Class_name::Verlet(){
     for (int j = 0; j < m_Nbody; j++){
       if (i != j){
         diff_eq(i, j);
+        //cout<<"acceleration"<< "i,j="<<i<<j<< m_acc<<endl;
         old_acc += m_acc;
+        //cout << "old_acc"<< old_acc << endl;
       }
     }
-    m_x_new(i) = m_x_old(i) + m_h*m_vx(i) +  (m_h*m_h)/2 * old_acc(0);
-    m_y_new(i) = m_y_old(i) + m_h*m_vy(i) +  (m_h*m_h)/2 * old_acc(1);
+    //cout << "indx= "<< i<<endl;
+    //cout << "old_acc"<< old_acc << endl;
+    //cout << "m_x_new"<< m_x_new(i) << endl;
+
+    m_x_new(i) = m_x_old(i) + m_h*m_vx_old(i) +  (m_h*m_h)/2 * old_acc(0);
+    //cout << "old_acc"<< old_acc << endl;
+    //cout << "m_x_new"<< m_x_new(i) << endl;
+    m_y_new(i) = m_y_old(i) + m_h*m_vy_old(i) +  (m_h*m_h)/2 * old_acc(1);
     for (int k=0;k<m_Nbody;k++){
-      if(k!=i){
+      if(i != k){
         diff_eq(i, k);
         new_acc+= m_acc;
       }
     }
-    m_vx(i) = m_vx(i) + m_h/2 * (new_acc(0)+old_acc(0));
-    m_vy(i) = m_vy(i) + m_h/2 * (new_acc(1)+old_acc(1));
+    m_vx_new(i) = m_vx_old(i) + m_h/2 * (new_acc(0)+old_acc(0));
+    m_vy_new(i) = m_vy_old(i) + m_h/2 * (new_acc(1)+old_acc(1));
+    m_vx_old(i) = m_vx_new(i);
+    m_vy_old(i) = m_vy_new(i);
   }
   m_x_old = m_x_new;
   m_y_old = m_y_new;
@@ -133,7 +151,6 @@ void Class_name::Verlet(){
 
 
 void Class_name::Solve(){
-
   for (int i = 0; i < m_N-1; i++){
     Verlet();
     Write_to_file();

@@ -5,16 +5,15 @@ import numpy as np
 from run import *
 from scipy.ndimage.filters import gaussian_filter
 from scipy.signal import savgol_filter
-plt.rcParams['font.size'] = 14
+plt.rcParams['font.size'] = 20
 Euler = "ForwardEuler"
 Verlet = "Verlet"
 
 def find_v0():
-    compile_func()
+    #compile_func()
     n = 100
     v0_array = np.linspace(6.2,6.4,n)# AU/yr
     rel_err =np.zeros(n)
-    compile_func()
     for i in range(len(v0_array)):
         filename = "orbit.txt"
         print('Running for x0, y0 = (1,0), vy0 = %f' % v0_array[i])
@@ -41,7 +40,6 @@ def find_v0():
 #find_v0()
 
 def find_dt(solver_method):
-    compile_func()
     n = 1001
     dt_array= np.linspace(1e-2,5e-4,n)
     rel_err =np.zeros(n)
@@ -74,7 +72,7 @@ def find_dt(solver_method):
 #find_dt(Verlet)
 
 def time_func():
-    compile_func()
+    #compile_func()
     N = 1e5
     T = 1.1
     h = T/(N-1)
@@ -90,26 +88,36 @@ def time_func():
 
 
 def vary_beta():
-    compile_func()
+
     beta_array = np.linspace(2,3,3)
     filename = 'outfile.txt'
-    plt.figure(figsize=(7,7))
+    plt.figure(figsize=(8,8))
+    plt.title(r'Earth orbit for varying $\beta$')
     print(np.load("optimal_v0.npy"))
     for i in range(len(beta_array)):
         run_func(filename, 5, vx0=0, dt=np.load('optimal_dt_Verlet.npy'), T_end=1.2, method=Verlet, beta = beta_array[i], compile=False)
         x,y = np.transpose(np.loadtxt(filename))
         plt.plot(x,y, label=r'$\beta = %.2f$' % beta_array[i])
+    plt.xlabel('AU')
+    plt.ylabel('AU')
     plt.legend()
     plt.savefig('vary_beta.png')
     plt.show()
-
+#compile_func()
 #vary_beta()
 
 def run_and_plot():
     filename = 'outfile.txt'
     run_func(filename, np.load("optimal_v0.npy"), vx0=0, dt=np.load('optimal_dt_Verlet.npy'), T_end=12, method=Verlet, beta=2, compile=False)
     x,y = np.transpose(np.loadtxt(filename))
-    plt.plot(x,y)
-    plt.show()
+    plt.figure(figsize=(8,8))
+    plt.title('Earth´s orbit ')
+    plt.plot(x,y, label='Earth')
+    plt.plot(0,0,'.', label='Sun')
+    plt.xlabel('AU')
+    plt.ylabel('AU')
+    plt.legend(loc='upper right')
+    plt.savefig('basic_orbit.png')
+    #plt.show()
 #compile_func()
 #run_and_plot()

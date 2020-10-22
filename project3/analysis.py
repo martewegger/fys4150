@@ -27,7 +27,7 @@ def find_v0():
     optimal_indx = np.argmin(rel_err)
     print('Optimal vy0 = %f' % (v0_array[optimal_indx]))
 
-    plt.figure(figsize = (8,8))
+    plt.figure(figsize = (11,11))
     plt.title('Accumulative relative error for orbit')
     plt.plot(v0_array, rel_err)
     plt.plot(v0_array[optimal_indx], rel_err[optimal_indx], 'ro', label='$V_{y0}$=%f' % v0_array[optimal_indx])
@@ -55,7 +55,7 @@ def find_dt(solver_method):
     optimal_indx = np.argmin(rel_err)
 
     print('Optimal dt = %f' % (dt_array[optimal_indx]))
-    plt.figure(figsize = (8,8))
+    plt.figure(figsize = (11,11))
     plt.title('Accumulative relative error for orbit')
     #plt.plot(dt_array, savgol_filter(rel_err, 51,6))
     plt.plot(dt_array, rel_err)
@@ -91,7 +91,7 @@ def vary_beta():
 
     beta_array = np.linspace(2,3,3)
     filename = 'outfile.txt'
-    plt.figure(figsize=(8,8))
+    plt.figure(figsize=(11,11))
     plt.title(r'Earth orbit for varying $\beta$')
     print(np.load("optimal_v0.npy"))
     for i in range(len(beta_array)):
@@ -101,6 +101,8 @@ def vary_beta():
     plt.xlabel('AU')
     plt.ylabel('AU')
     plt.legend()
+    plt.xlim(-1.5,1.5)
+    plt.ylim(-1.5,1.5)
     #plt.savefig('vary_beta.png')
     plt.show()
 #compile_func()
@@ -110,7 +112,7 @@ def run_and_plot():
     filename = 'outfile.txt'
     run_func(filename, np.load("optimal_v0.npy"), vx0=0, dt=np.load('optimal_dt_Verlet.npy'), T_end=12, method=Verlet, beta=2, compile=False)
     x,y = np.transpose(np.loadtxt(filename))
-    plt.figure(figsize=(8,8))
+    plt.figure(figsize=(11,11))
     plt.title('Earth´s orbit ')
     plt.plot(x,y, label='Earth')
     plt.plot(0,0,'.', label='Sun')

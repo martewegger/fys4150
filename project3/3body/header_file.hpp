@@ -17,7 +17,7 @@ private:
     vec m_x, m_y, m_vx_old, m_vy_old,m_vx_new, m_vy_new, m_acc, m_mass;
     int m_N, m_Nbody;
     ofstream m_ofile;
-    string m_filename;
+    string m_filename,m_mercury;
 
 public:
     void Initialize(double h, double T_end, string filename, double beta);

@@ -10,13 +10,14 @@
 
 #define pi 3.14159265359
 #define M_sun 1.9891E30 // 1 solar mass in kg
+#define c 63145  // speed of light in AU/yr
 
 using namespace std;
 using namespace arma;
 
 // Function initializing variables
 void Class_name::Initialize(double h, double T_end, string filename, double beta){
-
+  m_mercury = "True";
   //2459134.500000000 = A.D. 2020-Oct-12 00:00:00.0000 TDB
   m_filename = filename;
   m_Nbody = 9;
@@ -143,6 +144,31 @@ void Class_name::Initialize(double h, double T_end, string filename, double beta
       m_vy_old(0) -= m_mass(i)*m_vy_old(i);
     }
   }
+
+  if (m_mercury == "True"){
+    m_Nbody = 2;
+    m_x = vec(m_Nbody, fill::zeros);
+    m_y = vec(m_Nbody, fill::zeros);
+    m_vx_old = vec(m_Nbody, fill::zeros);
+    m_vy_old = vec(m_Nbody, fill::zeros);
+    m_vx_new = vec(m_Nbody, fill::zeros);
+    m_vy_new = vec(m_Nbody, fill::zeros);
+    m_acc = vec(2, fill::zeros);
+    m_mass = vec(m_Nbody, fill::zeros);
+
+    m_x(0) = -6.122473398487174E-3;
+    m_y(0) = 6.410482460526987E-3;
+    m_x(1) = 3.532243431882026E-1;
+    m_y(1) = -3.883410607572125E-2;
+    m_mass(0) = 1.;
+    m_mass(1) = 3.3E23/M_sun;
+
+    m_vx_old(1) = -1.934765136590339E-3*365;
+    m_vy_old(1) = 2.916727934340103E-2*365;
+
+    m_vx_old(0) = -m_vx_old(1)*m_mass(1);
+    m_vy_old(0) = -m_vy_old(1)*m_mass(1);
+  }
   m_ofile.open(filename);
   m_ofile << setw(30) << "#Sun";
   m_ofile << setw(30) <<"Earth";
@@ -169,13 +195,18 @@ void Class_name::Write_to_file(){
 }
 
 void Class_name::diff_eq(int i, int j){
-  //cout<<"acceleration"<< "i,j = "<<i<<j<<endl;;//<< m_acc<<endl;
   m_acc.fill(0.);
   double x = m_x(i)-m_x(j);
   double y = m_y(i)-m_y(j);
   double r = sqrt(pow(x,2) + pow(y,2));
   m_acc(0) = -m_G*x*m_mass(j) / pow(r, m_beta+1);
   m_acc(1) = -m_G*y*m_mass(j) / pow(r, m_beta+1);
+  if (m_mercury=="True"){
+    double l = sqrt(pow((x*m_vx_old(i)),2)+pow((y*m_vy_old(i)),2));
+    double factor = (1+3*pow(l,2)/pow((r*c),2));
+    m_acc(0) *= factor;
+    m_acc(1) *= factor;
+  }
 }
 
 

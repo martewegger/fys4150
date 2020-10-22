@@ -32,6 +32,9 @@ void Class_name::Initialize(double vx0, double vy0, double h, double T_end, doub
   m_y(0) = 0.;  //test case
   m_vx0 = vx0;
   m_vy0 = vy0;   //test case
+  
+  }
+
 }
 
 void Class_name::Solve(vec chosen_method(vec pos_obj1, vec sun_pos, vec old_vel, double h, double M, double beta, vec accel_func(double M, vec pos_obj1, vec pos_obj2, double beta)), vec accel_func(double M, vec pos_obj1, vec pos_obj2, double beta)){

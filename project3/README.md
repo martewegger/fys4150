@@ -1,6 +1,6 @@
 ### Instructions for running the code in project 3
 
-We have created 2 blocks of code. One for solving a 2body problem in a solar reference point, and one to solve an N-body system in either a CM-system or a if tweaked correctly, even a solar reference system.
+We have created 2 blocks of code. One for solving a 2body problem in a solar reference point, and one to solve an N-body system in either a CM-system or if tweaked correctly, even a solar reference system.
 
 
 The directory called «2Body» contains code for solving the 2-body problem for the Sun-Earth system. The python file «analysis.py» uses the c++ class as a solver and performs various analysis'. You can reproduce the results described in the report for the 2body system by running the analysis.py file. The c++ class will first be compiled, and the functions performing the various analysis´ will be run in turn.

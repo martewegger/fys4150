@@ -22,7 +22,7 @@ void Class_name::Initialize(double h, double T_end, string filename, double beta
   //to initiate the varying jupiter mass- system set x_Mjup to be the number of jupiter masses you want jupiter to be simulated with (M_jup_sim = x_Mjup*Mjup_real). Where M_jup_real is the actual mass of jupiter in units of solar masses.
   double x_Mjup = 0.;
   //To initiate the Sun-Mercury system, Set x_Mjup=0. and set m_mercury="True"
-  m_mercury =  "false";// "True";
+  m_mercury =  "False";// "True";
   //2459134.500000000 = A.D. 2020-Oct-12 00:00:00.0000 TDB
   m_filename = filename;
   m_Nbody = 9;

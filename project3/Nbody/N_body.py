@@ -32,7 +32,7 @@ def Whole_system():
     plt.legend(loc='upper right')
     plt.savefig('orbits.png')
     plt.show()
-    
+
 #compile_func()
 #Whole_system()
 
@@ -86,7 +86,9 @@ def Mercury_func():
     x_p = x[indx_final]
     y_p = y[indx_final]
 
-    theta_p = np.abs(np.arctan(y_p[-1]/x_p[-1]));print(theta_p*(180/np.pi))#*3600)
+    theta_p = np.abs(np.arctan(y_p[-1]/x_p[-1]));
+    print('theta_p = ', theta_p*(180/np.pi), 'degrees')#*3600)
+    print('theta_p = ', theta_p*(180/np.pi)*3600, 'arcsecs')
     plt.figure(figsize = (12,18))
     plt.subplot(2,1,1)
     plt.title('Mercury´s first and last orbit \n over a 100 year period')
@@ -113,5 +115,5 @@ def Mercury_func():
     plt.ylim(-0.04, 0.04)
     plt.savefig('mercury.png')
     #plt.show()
-#compile_func()
-#Mercury_func()
+compile_func()
+Mercury_func()

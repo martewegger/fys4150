@@ -8,7 +8,7 @@ def compile_func():
     os.system("echo compiling...")
     os.system(" ".join(["c++", "-o", executeable, cpp_codes, compiler_flags]))
 
-def run_func(filename="outfile.txt", dt=dt=0.003397, T_end=1.1, beta=2, compile=False):
+def run_func(filename="outfile.txt", dt=0.003397, T_end=1.1, beta=2, compile=False):
     if compile==True:
         compile_func()
     run = "./main.out"

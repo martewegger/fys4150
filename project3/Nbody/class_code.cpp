@@ -17,12 +17,12 @@ using namespace arma;
 
 // Function initializing variables
 void Class_name::Initialize(double h, double T_end, string filename, double beta){
-  m_mercury = "True";
+  //Set m_mercury="True" if you want to evaluate the case of the Sun-Mercury system.
+  m_mercury =  "True";// "True";
   //2459134.500000000 = A.D. 2020-Oct-12 00:00:00.0000 TDB
   m_filename = filename;
   m_Nbody = 9;
   m_beta = beta;
-  cout << "beta = "<<m_beta<<endl;
   cout << "dt = " << h<< endl;
   m_N = T_end/h+1;
   cout << "N = "<<m_N<<endl;
@@ -109,13 +109,15 @@ void Class_name::Initialize(double h, double T_end, string filename, double beta
   m_vx_old(8) = 2.942753009796773E-3* 365;
   m_vy_old(8) = 5.927341579097886E-4* 365;
 
-  //m_Nbody = 5;
   for (int i = 1;i<m_Nbody;i++){
     m_vx_old(0) -= m_mass(i)*m_vx_old(i);
     m_vy_old(0) -= m_mass(i)*m_vy_old(i);
   }
-  m_Nbody = 3;
+  //Unhash the next line to initiate the case of the Sun, Earth and Jupiter and choose the mass of jupiter
+  //m_Nbody = 3;
+
   if (m_Nbody==3){
+    double x_Mjup = 1.;
     m_x = vec(m_Nbody, fill::zeros);
     m_y = vec(m_Nbody, fill::zeros);
     m_vx_old = vec(m_Nbody, fill::zeros);
@@ -138,7 +140,7 @@ void Class_name::Initialize(double h, double T_end, string filename, double beta
     m_vy_old(2) = (pi*pi)/4;
     m_mass(0) = 1.;
     m_mass(1) = 1.*5.972E24/M_sun;
-    m_mass(2) = 1.*1.898E27/M_sun;
+    m_mass(2) = x_Mjup*1.898E27/M_sun;
     for (int i = 1;i<m_Nbody;i++){
       m_vx_old(0) -= m_mass(i)*m_vx_old(i);
       m_vy_old(0) -= m_mass(i)*m_vy_old(i);

@@ -17,8 +17,12 @@ using namespace arma;
 
 // Function initializing variables
 void Class_name::Initialize(double h, double T_end, string filename, double beta){
-  //Set m_mercury="True" if you want to evaluate the case of the Sun-Mercury system.
-  m_mercury =  "True";// "True";
+
+
+  //to initiate the varying jupiter mass- system set x_Mjup to be the number of jupiter masses you want jupiter to be simulated with (M_jup_sim = x_Mjup*Mjup_real). Where M_jup_real is the actual mass of jupiter in units of solar masses.
+  double x_Mjup = 0.;
+  //To initiate the Sun-Mercury system, Set x_Mjup=0. and set m_mercury="True"
+  m_mercury =  "false";// "True";
   //2459134.500000000 = A.D. 2020-Oct-12 00:00:00.0000 TDB
   m_filename = filename;
   m_Nbody = 9;
@@ -46,7 +50,6 @@ void Class_name::Initialize(double h, double T_end, string filename, double beta
   m_mass = vec(m_Nbody, fill::zeros);
 
   m_mass(0) = 1.; //Solar mass
-  //m_mass(1) = 3.3E23/M_sun;
   m_mass(1) = 4.9E24/M_sun;
   m_mass(2) = 5.972E24/M_sun;
   m_mass(3) = 6.6E23/M_sun;
@@ -56,7 +59,6 @@ void Class_name::Initialize(double h, double T_end, string filename, double beta
   m_mass(7) = 1.E26/M_sun;
   m_mass(8) = 1.3E22/M_sun;
 
-  //cout << "Jupiter mass = " << m_mass(2) << endl;
 
   m_x(0) = -6.122473398487174E-3;
   m_y(0) = 6.410482460526987E-3;
@@ -113,11 +115,8 @@ void Class_name::Initialize(double h, double T_end, string filename, double beta
     m_vx_old(0) -= m_mass(i)*m_vx_old(i);
     m_vy_old(0) -= m_mass(i)*m_vy_old(i);
   }
-  //Unhash the next line to initiate the case of the Sun, Earth and Jupiter and choose the mass of jupiter
-  //m_Nbody = 3;
 
-  if (m_Nbody==3){
-    double x_Mjup = 1.;
+  if (x_Mjup!=0.){
     m_x = vec(m_Nbody, fill::zeros);
     m_y = vec(m_Nbody, fill::zeros);
     m_vx_old = vec(m_Nbody, fill::zeros);

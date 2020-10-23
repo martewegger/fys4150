@@ -1,3 +1,8 @@
 ### Instructions for running the code in project 3
 
-The 
+We have created 2 blocks of code. One for solving a 2body problem in a solar reference point, and one to solve an N-body system in either a CM-system or a if tweaked correctly, even a solar reference system.
+
+
+The directory called «2Body» contains code for solving the 2-body problem for the Sun-Earth system. The python file «analysis.py» uses the c++ class as a solver and performs various analysis'. You can reproduce the results described in the report for the 2body system by running the analysis.py file. The c++ class will first be compiled, and the functions performing the various analysis´ will be run in turn.
+
+In the «Nbody»-directory, we solve various cases of an N-body system. The various analysis' described in the report is controlled and run from the «N_body.py» file. This file contains the functions: «Whole_system» which simulates all major bodies in the solar system except Mercury in a CM-system, «vary_Mjup» which simulates the 3-body system of the Sun, Earth and Jupiter for various jupiter masses, and finally a 2-body system with the Sun and Mercury in a solar reference point system. The c++ solved needs to be initiated in a particular way for each analysis function. This is done by editing the «class_code.cpp» files «Initialize»-function. By default the whole solar system case is initiated. To initiate the Sun, Earth and Jupiter-system, change the parameter «x_Mjup» in line 23 in «class_code.cpp». To initiate the Sun-Mercury system, set the parameter «m_mercury» to "True". Obviously the c++ class will need to be compiled each time you change the Initialize-function. A call to the python function «compile_func()» compile the c++ class.

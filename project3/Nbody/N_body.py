@@ -19,7 +19,6 @@ def Whole_system():
         y = data[int(2*i+1)]
         plt.plot(x,y, label=name[i])
         plt.plot(x[-1],y[-1],'.')
-    #plt.xlabel('AU')
     plt.ylabel('AU')
     plt.legend(loc='upper right')
     plt.subplot(2,1,2);plt.title('Orbits of the innermost objects')
@@ -33,6 +32,7 @@ def Whole_system():
     plt.legend(loc='upper right')
     plt.savefig('orbits.png')
     plt.show()
+    
 #compile_func()
 #Whole_system()
 

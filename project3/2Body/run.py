@@ -8,7 +8,7 @@ def compile_func():
     os.system("echo compiling...")
     os.system(" ".join(["c++", "-o", executeable, cpp_codes, compiler_flags]))
 
-def run_func(filename="outfile.txt", vy0=np.load("optimal_v0.npy"),vx0=0, dt=np.load("optimal_dt_ForwardEuler.npy"), T_end=1.1, method = "ForwardEuler", beta=2, compile=False):
+def run_func(filename="outfile.txt", vy0=6.282828,vx0=0, dt=0.003397, T_end=1.1, method = "Verlet", beta=2, compile=False):
     if compile==True:
         compile_func()
     run = "./main.out"

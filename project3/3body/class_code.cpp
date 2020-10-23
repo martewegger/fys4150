@@ -156,18 +156,18 @@ void Class_name::Initialize(double h, double T_end, string filename, double beta
     m_acc = vec(2, fill::zeros);
     m_mass = vec(m_Nbody, fill::zeros);
 
-    m_x(0) = -6.122473398487174E-3;
-    m_y(0) = 6.410482460526987E-3;
-    m_x(1) = 3.532243431882026E-1;
-    m_y(1) = -3.883410607572125E-2;
+    m_x(0) = 0.;//-6.122473398487174E-3;
+    m_y(0) = 0.;//6.410482460526987E-3;
+    m_x(1) = 0.3075;//3.532243431882026E-1;
+    m_y(1) = 0.;//-3.883410607572125E-2;
     m_mass(0) = 1.;
-    m_mass(1) = 3.3E23/M_sun;
+    m_mass(1) = 0.;///M_sun;
 
-    m_vx_old(1) = -1.934765136590339E-3*365;
-    m_vy_old(1) = 2.916727934340103E-2*365;
+    m_vx_old(1) = 0.;//-1.934765136590339E-3*365;
+    m_vy_old(1) = 12.44;//2.916727934340103E-2*365;
 
-    m_vx_old(0) = -m_vx_old(1)*m_mass(1);
-    m_vy_old(0) = -m_vy_old(1)*m_mass(1);
+    m_vx_old(0) = 0.;//-m_vx_old(1)*m_mass(1);
+    m_vy_old(0) = 0.;//-m_vy_old(1)*m_mass(1);
   }
   m_ofile.open(filename);
   m_ofile << setw(30) << "#Sun";

@@ -53,6 +53,7 @@ def find_dt(solver_method):
     optimal_indx = np.argmin(rel_err)
 
     print('Optimal dt = %f' % (dt_array[optimal_indx]))
+    print('Relative error = %.5f' % rel_err[optimal_indx])
     plt.figure(figsize = (11,11))
     plt.title('Accumulative relative error for orbit')
     plt.plot(dt_array, rel_err)
@@ -89,7 +90,6 @@ def vary_beta():
     filename = 'outfile.txt'
     plt.figure(figsize=(11,11))
     plt.title(r'Earth orbit for varying $\beta$')
-    print(np.load("optimal_v0.npy"))
     for i in range(len(beta_array)):
         run_func(filename, 5, vx0=0, T_end=1.1, method=Verlet, beta = beta_array[i], compile=False)
         x,y = np.transpose(np.loadtxt(filename))
@@ -101,7 +101,6 @@ def vary_beta():
     plt.ylim(-1.5,1.5)
     plt.savefig('vary_beta.png')
     #plt.show()
-#compile_func()
 vary_beta()
 
 def run_and_plot():
@@ -117,5 +116,4 @@ def run_and_plot():
     plt.legend(loc='upper right')
     plt.savefig('basic_orbit.png')
     #plt.show()
-#compile_func()
 run_and_plot()

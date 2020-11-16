@@ -1,6 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
-def Frequency_func(energies, in_label):
+def probability_func(energies, in_label):
     max_ = np.max(energies)
     min_ = np.min(energies)
     values = np.arange(min_,max_+1,4)
@@ -14,7 +14,7 @@ def Frequency_func(energies, in_label):
     plt.title("Probability Distribution $P(E)$", fontsize=20)
     plt.grid(axis="y",ls="--",zorder=0)
     plt.bar(values, prob, width=2.5, zorder=2, label=in_label)
-    plt.axvline(expected,c="r",ls="--", label="Expectation value")
+    plt.axvline(expected,c="r",ls="--", label=r'$\langle E\rangle$ = %.2f' % expected)
     plt.legend(fontsize=16)
     plt.xlabel("Energies", fontsize=16)
 

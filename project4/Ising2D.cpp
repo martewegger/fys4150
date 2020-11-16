@@ -81,8 +81,8 @@ void Ising2D::Monte_Carlo(int MC, int n){  //n er number of spins?
     y = int_dist(generator);
     Metropolis_algo(x, y);
     m_energies[i] = m_E;
-    m_E_mean += abs(m_E);
-    m_M_mean += abs(m_M);
+    m_E_mean += m_E;
+    m_M_mean += m_M;
     m_E_mean_squared += m_E*m_E;
     m_M_mean_squared += m_M*m_M;
   }
@@ -91,6 +91,13 @@ void Ising2D::Monte_Carlo(int MC, int n){  //n er number of spins?
   m_M_mean *= (1./MC); //her finner vi mean verdi til M, <M>
   m_E_mean_squared *= (1./MC); //<E^2>
   m_M_mean_squared *= (1./MC); //<M^2>
+
+  file2.open("data.txt");
+  file2 << setw(15) << setprecision(8) << m_E_mean;
+  file2 << setw(15) << setprecision(8) <<  m_M_mean;
+  file2 << setw(15) << setprecision(8) <<  m_E_mean_squared;
+  file2 << setw(15) << setprecision(8) <<  m_M_mean_squared;
+
   //cout << m_M_mean << endl;
 
   //Write energies to file here

@@ -23,6 +23,7 @@ private: //åpne for alle metoder INNI klassen.
     int idx(int i, int j); //indexer i E
     void init_spin_matrix(string initial_state);
     ofstream myfile;
+    ofstream file2;
 
     //default_random_engine generator;
     mt19937_64 generator;

@@ -19,7 +19,7 @@ int main(int argc, char *argv[]) {
   //string initial_state="ordered";
   string initial_state = argv[3];
   int MC = atol(argv[4]);
-
+  int n = atol(argv[5]);
 
   //double T = 1.; //bare random nå
   //int dim = 20; //dette er L, altså dimensjonen på matrisa
@@ -27,9 +27,6 @@ int main(int argc, char *argv[]) {
   Ising2D my_solver(T, len, initial_state); //kan ha mange ulike initializere.
   //my_solver.Write_to_file(); //kaller på den
   //my_solver.Metropolis_algo(dim,dim);
-
-
-  int n = 0;
   my_solver.Monte_Carlo(MC, n);
   return 0;
 }

@@ -9,11 +9,11 @@ def compile_func():
     os.system("echo compiling...")
     os.system(" ".join(["c++", "-o", executeable, cpp_codes]))
 
-def run_func(temp=1, len=20, initial_state="random",MC_cycles=1e2, compile=False):
+def run_func(temp=1, len=20, initial_state="random",MC_cycles=1e2, n=0, compile=False):
     if compile==True:
         compile_func()
     run = "./main.out"
-    os.system(" ".join([run, str(temp), str(len), str(initial_state), str(MC_cycles)]))
+    os.system(" ".join([run, str(temp), str(len), str(initial_state), str(MC_cycles), str(n)]))
 
 if __name__ == '__main__':
     #compile_func()

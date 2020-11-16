@@ -4,26 +4,40 @@ import matplotlib.pyplot as plt
 plt.rcParams['font.size'] = 14
 
 
-def d_func():
-    T = 1 # kT/J
-    N_cycles = 2e5
-    T = 2.4
+def d_func(T=1, N_cycles = 1e5):
+    MC_array = np.arange(N_cycles)
+
     run_func(temp = T, len = 20, initial_state="random", MC_cycles = N_cycles)
     energies_disordered = np.transpose(np.loadtxt("Energy.txt"))
+    median = np.median(energies_disordered)
+    indx1 = np.where(energies_disordered==median)[0][0]
+    print('Equilibrium situation reached after %i MC cycles with disordered initial state' % MC_array[indx1])
+
     plt.figure(figsize=(15,7))
     plt.subplot(1,2,1)
-    plt.title(r'Energy as a function of MonteCarlo cycles for $T=1 $kT/J')
-    plt.plot(np.arange(N_cycles), energies_disordered, label='Initially disordered')
-    plt.axhline(np.median(energies_disordered), c='r',label='$E_{eq} = %i$' % np.median(energies_disordered))
+    plt.title(r'Energy evolution for $T=1$ kT/J')
+    plt.plot(MC_array, energies_disordered, label='Initially disordered')
+    plt.axhline(median, c='r', ls = 'dashed',label='$E_{eq} = %i$' % median)
+    plt.ylabel('Energy [J](coupling constant)')
+    plt.xlabel('# of Monte Carlo cycles')
     plt.legend(loc='upper right')
 
     run_func(temp = T, len = 20, initial_state="ordered", MC_cycles = N_cycles)
     energies_ordered = np.transpose(np.loadtxt("Energy.txt"))
+    median = np.median(energies_ordered)
+    indx2 = np.array((np.where(energies_ordered==median)))[0,0]
+    print('Equilibrium situation reached after %i MC cycles with ordered initial state' % MC_array[indx2])
+
     plt.subplot(1,2,2)
-    plt.title(r'Energy as a function of MonteCarlo cycles for $T=1 $kT/J')
-    plt.plot(np.arange(N_cycles), energies_ordered, label='Initially ordered')
-    plt.axhline(np.median(energies_ordered), c='r',label='$E_{eq} = %i$' % np.median(energies_ordered))
-    plt.legend(loc='lower right')
+    plt.title(r'Energy evolution for $T=1$ kT/J')
+    plt.plot(MC_array, energies_ordered, label='Initially ordered')
+    plt.axhline(median, c='r', ls = 'dashed',label='$E_{eq} = %i$' % median)
+    plt.xlabel('# of Monte Carlo cycles')
+    plt.legend()
+    plt.savefig('energies_T_%i' % T)
     plt.show()
+
+
 #compile_func()
-d_func()
+d_func(T=1, N_cycles=2e5)
+#d_func(T=2.4, N_cycles=2e5)

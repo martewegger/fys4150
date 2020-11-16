@@ -1,5 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
+
 def Frequency_func(energies, in_label):
     max_ = np.max(energies)
     min_ = np.min(energies)

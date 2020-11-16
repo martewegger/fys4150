@@ -17,14 +17,14 @@ int main(int argc, char *argv[]) {
   int len = atol(argv[2]);
   //string initial_state = "random";
   //string initial_state="ordered";
-  string initial_state = argv[3]
-  int MC = atol[];
+  string initial_state = argv[3];
+  int MC = atol(argv[4]);
 
 
-  double T = 1.; //bare random nå
-  int dim = 20; //dette er L, altså dimensjonen på matrisa
+  //double T = 1.; //bare random nå
+  //int dim = 20; //dette er L, altså dimensjonen på matrisa
   //kalle på den initializeren:
-  Ising2D my_solver(T, dim, initial_state); //kan ha mange ulike initializere.
+  Ising2D my_solver(T, len, initial_state); //kan ha mange ulike initializere.
   //my_solver.Write_to_file(); //kaller på den
   //my_solver.Metropolis_algo(dim,dim);
 

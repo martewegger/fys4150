@@ -25,50 +25,31 @@ def find_burn_N_func(N_cycles):
     file.close()
 N_list = [5e5,8e5,9e5,1e6,2e6,3e6,5e6,1e7]
 #compile_func()
-#find_burn_N_func(N_cycles= 2e6)
+find_burn_N_func(N_cycles= 5e6)
 
-
+'''
 def plot_burn_in_no():
     T_arr = np.arange(2,2.3+0.05,0.05)
     L_arr = np.array((40,60,80,100))
-    N_arr = [5e5,8e5,1e6,5e6]
+    N_arr = [5e5,8e5,9e5,1e6,2e6,3e6,5e6,1e7]
     data = np.zeros((len(N_arr), len(L_arr), len(T_arr)))
     for i in range(len(N_arr)):
         data[i,:,:] = np.loadtxt('burn_in_no_%.e.txt'% N_arr)
-        for j in range(len(L_arr)):
-
-    data2 = np.loadtxt('burn_in_no_v2.txt')
-    data3 = np.loadtxt('burn_in_no_v3.txt')
-    lenL, lenT = data1.shape
-    N1 = 5e5; N2 = 1e6; N3 = 5e6
-    N_arr = [5e5,8e5,1e6,5e6]
-
-
+    plt.figure(figsize=(10,10))
+    for j in range(len(L_arr)):
+        for k in range(len(T_arr)):
+            plt.plot(data[:,j,k], label='L=%i, T=%.2f' % (L_arr[j], T_arr[k]))
+    plt.xlabel('# of Monte Carlo cycles')
+    plt.ylabel('Relative # of burn cycles needed, #/N')
+    plt.legend()'''
 
 
 
 
 
-    '''
-    plt.figure(figsize=(15,8))
-    plt.subplot(1,2,1)
-    plt.title(r'Number of burn in cycles using $N=5\cdot 10^5$')
-    for i in range(len(L_arr)):
-        plt.plot(T_arr, data1[i,:]/N1,'.')
-        plt.plot(T_arr, data1[i,:]/N1, label='L = %i' % L_arr[i])
-    plt.xlabel('Temperature')
-    plt.ylabel('Relative number of burn in cycles, #/N')
-    plt.legend()
 
-    data2 = np.loadtxt('burn_in_no_v2.txt')
-    N2 = 1e6
-    plt.subplot(1,2,2)
-    plt.title(r'Number of burn in cycles using $N=1\cdot 10^6$')
-    for i in range(len(L_arr)):
-        plt.plot(T_arr, data1[i,:]/N2,'.')
-        plt.plot(T_arr, data1[i,:]/N2, label='L = %i' % L_arr[i])
-    plt.xlabel('Temperature')
-    plt.legend()
-    plt.savefig('burn_in_no.png')
-    plt.show()'''
+
+
+
+
 #plot_burn_in_no()

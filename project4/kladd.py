@@ -3,7 +3,7 @@ from run import *
 import matplotlib.pyplot as plt
 from probability import *
 
-burn_in_no = np.loadtxt('burn_in_no_v3.txt')
+burn_in_no = np.loadtxt('burn_in_no_2e+06.txt')
 T_arr = np.arange(2,2.3+0.05,0.05)
 L_arr = np.array((40,60,80,100))
 N_cycles = 1e6
@@ -38,7 +38,6 @@ plt.show()'''
 '''plt.plot(np.arange(N_cycles), E)
 plt.show()'''
 #probability_func(M, in_label='magnetisation')
-N = 8e5
-file= open('test%.e'% N, 'w')
-file.write('here')
-file.close()
+E_mean = np.load('E_M_E2_M2.npy')[0]
+a = E_mean*T_arr[np.newaxis]
+print(a.shape)

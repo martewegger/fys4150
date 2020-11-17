@@ -53,7 +53,7 @@ void Ising2D::init_spin_matrix(string initial_state){
     m_idx[i] = i-1; //finding index
   }
   m_idx[0] = m_idx[m_L];
-  m_idx[m_L+2] = m_idx[0];
+  m_idx[m_L+2] = m_idx[1];
 
   for (int i=1; i<=m_L; i++){
     for (int j=1; j<=m_L; j++){
@@ -76,39 +76,45 @@ void Ising2D::Monte_Carlo(int MC, int n){  //n er number of spins?
 
 
   m_energies = new double[MC];
+  m_magnetisation = new double[MC];
   for (int i = 0; i < MC; i++){
     x = int_dist(generator);
     y = int_dist(generator);
     Metropolis_algo(x, y);
     m_energies[i] = m_E;
-    m_E_mean += m_E;
-    m_M_mean += m_M;
-    m_E_mean_squared += m_E*m_E;
-    m_M_mean_squared += m_M*m_M;
+    m_magnetisation[i] = m_M;
+    //m_E_mean += m_E;
+    //m_M_mean += m_M;
+    //m_E_mean_squared += m_E*m_E;
+    //m_M_mean_squared += m_M*m_M;
   }
 
-  m_E_mean *= (1./MC); //her finner vi mean verdi til E, <E>
-  m_M_mean *= (1./MC); //her finner vi mean verdi til M, <M>
-  m_E_mean_squared *= (1./MC); //<E^2>
-  m_M_mean_squared *= (1./MC); //<M^2>
+  //m_E_mean *= (1./MC); //her finner vi mean verdi til E, <E>
+  //m_M_mean *= (1./MC); //her finner vi mean verdi til M, <M>
+  //m_E_mean_squared *= (1./MC); //<E^2>
+  //m_M_mean_squared *= (1./MC); //<M^2>
 
-  file2.open("data.txt");
-  file2 << setw(15) << setprecision(8) << m_E_mean;
-  file2 << setw(15) << setprecision(8) <<  m_M_mean;
-  file2 << setw(15) << setprecision(8) <<  m_E_mean_squared;
-  file2 << setw(15) << setprecision(8) <<  m_M_mean_squared;
+  //file2.open("data.txt");
+  //file2 << setw(15) << setprecision(8) << m_E_mean;
+  //ile2 << setw(15) << setprecision(8) <<  m_M_mean;
+  //file2 << setw(15) << setprecision(8) <<  m_E_mean_squared;
+  //file2 << setw(15) << setprecision(8) <<  m_M_mean_squared;
 
   //cout << m_M_mean << endl;
 
   //Write energies to file here
   //writing to file:
+  file2.open("magnetisation.txt");
   myfile.open("Energy.txt");
   for (int i = 0; i < MC; i++){
     myfile << m_energies[i] << endl;
+    file2 << m_magnetisation[i]<< endl;
   }
   myfile.close();
+  file2.close();
 
   delete[] m_energies; //slette den her etterpå, trenger den ikke, tar bare opp minne.
+  delete[] m_magnetisation;
 
 }
 

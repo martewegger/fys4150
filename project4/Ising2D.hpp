@@ -15,7 +15,7 @@ using namespace std;
 
 class Ising2D{
 private: //åpne for alle metoder INNI klassen.
-    double m_T, m_k, m_J, m_beta, ran_nr, *m_energies;
+    double m_T, m_k, m_J, m_beta, ran_nr, *m_energies, *m_magnetisation;
     int m_L, m_L2, m_M, m_E, m_dE, m_dM, m_E_mean, m_M_mean, m_E_mean_squared, m_M_mean_squared;
     int *m_spin_array, *m_idx; //Pointer to spin array and index array
     double m_Boltzmann[17]; //Look up table for Boltzmann distribution, extract probability through m_Boltzmann[dE+8]

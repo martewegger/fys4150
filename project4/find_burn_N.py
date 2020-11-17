@@ -24,8 +24,8 @@ def find_burn_N_func(N_cycles):
     print(results)
     file.close()
 N_list = [5e5,8e5,9e5,1e6,2e6,3e6,5e6,1e7]
-compile_func()
-find_burn_N_func(N_cycles= 2e6)
+#compile_func()
+#find_burn_N_func(N_cycles= 2e6)
 
 
 def plot_burn_in_no():

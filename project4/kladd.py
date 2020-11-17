@@ -38,6 +38,4 @@ plt.show()'''
 '''plt.plot(np.arange(N_cycles), E)
 plt.show()'''
 #probability_func(M, in_label='magnetisation')
-E_mean = np.load('E_M_E2_M2.npy')[0]
-a = E_mean*T_arr[np.newaxis]
-print(a.shape)
+print(np.load('E_M_E2_M2.npy').shape)

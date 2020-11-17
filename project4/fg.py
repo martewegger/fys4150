@@ -3,6 +3,9 @@ from run import *
 import matplotlib.pyplot as plt
 from probability import *
 from astropy import constants
+plt.rcParams['font.size'] = 14
+
+
 def Cv_func(E_mean, E_mean_sqrd, T):
     return 1/(constants.k_B*T**2)*(E_mean_sqrd-E_mean**2)
 
@@ -45,8 +48,8 @@ def plot_func():
     T_arr = np.linspace(T0,T1,7)
     E_mean, M_mean, E_mean_sqrd, M_mean_sqrd = np.load('E_M_E2_M2.npy')
     ylen, xlen = E_mean.shape
-    Cv = Cv_func(E_mean, E_mean_sqrd, T[np.newaxis])
-    chi = chi_func(M_mean, M_mean_sqrd, T[np.newaxis])
+    Cv = Cv_func(E_mean, E_mean_sqrd, T_arr[np.newaxis])
+    chi = chi_func(M_mean, M_mean_sqrd, T_arr[np.newaxis])
     plt.figure(figsize=(12,12))
 
     plt.subplot(2,2,1)
@@ -56,59 +59,51 @@ def plot_func():
     plt.ylabel(r'$\langle E \rangle$')
     plt.legend()
 
+    tol = 1e1  # Choose a tolerance
+    M_indx = np.zeros((ylen))
+    M_Tc = np.zeros((ylen))
     plt.subplot(2,2,2)
     plt.title(r'Magnetisation, $\langle |M| \rangle$')
     for i in range(len(L_arr)):
-        plt.plot(T_arr,E_mean[i], label='L=%i' % L_arr[i])
-    plt.ylabel(r'$\langle E \rangle$')
+        #M_indx[i] = np.where(M_mean<=tol)[0][0]
+        #M_Tc[i] = T_arr[M_indx[i]]
+        plt.plot(T_arr,M_mean[i], label='L=%i' % L_arr[i])
+        #plt.plot(M_Tc[i], M_mean[M_indx[i]], '.', label=r'$T_c = %.2f$ ' % M_Tc[i])
+
+    plt.ylabel(r'$\langle |M| \rangle$')
     plt.legend()
 
+    Cv_indx = np.zeros((ylen))
     plt.subplot(2,2,3)
     plt.title(r'Specific heat capacity, $C_v$')
     for i in range(len(L_arr)):
-        plt.plot(T_arr,E_mean[i], label='L=%i' % L_arr[i])
-    plt.ylabel(r'$\langle E \rangle$')
+        #Cv_indx[i] = np.argmax(np.abs(np.gradient(Cv,T_arr,axis=1)))
+        #Cv_Tc[i] = T_arr[Cv_indx[i]]
+        plt.plot(T_arr,Cv[i], label='L=%i' % L_arr[i])
+        #plt.plot(Cv_Tc[i], Cv_mean[Cv_indx[i]], '.', label=r'$T_c = %.2f$ ' % Cv_Tc[i])
+    plt.ylabel(r'$C_v$')
     plt.xlabel('Temperature')
     plt.legend()
-    plt.show()
 
-
-
-
-
-
-    '''
+    chi_indx = np.zeros((ylen))
+    plt.subplot(2,2,4)
+    plt.title(r'Susceptibility, $\chi$')
     for i in range(len(L_arr)):
-        plt.subplot(2,2,1)
-        plt.plot(T_arr, E_mean[i],label='L=%i' % L_arr[i])
-        if i == int(ylen-1):
-            plt.title(r'Average energy, $\langle E \rangle $')
-            plt.ylabel(r'$\langle E \rangle\ [J]$')
-            plt.legend()
+        #chi_indx[i] = np.argmax(np.abs(np.gradient(chi,T_arr,axis=1)))
+        #chi_Tc[i] = T_arr[chi_indx[i]]
+        plt.plot(T_arr,chi[i], label='L=%i' % L_arr[i])
+        #plt.plot(chi_Tc[i], chi[chi_indx[i]], '.', label=r'$T_c = %.2f$ ' % chi_Tc[i])
+    plt.ylabel(r'$\chi$')
+    plt.xlabel('Temperature')
+    plt.legend()
 
-        plt.subplot(2,2,2)
-        plt.plot(T_arr, M_mean[i],label='L=%i' % L_arr[i])
-        if i == int(ylen-1):
-            plt.title(r'Average magnetisation, $\langle M \rangle$')
-            plt.ylabel(r'$\langle M \rangle$')
-            plt.legend()
+    plt.savefig('g.png')
+    plt.show()
+    #np.save('Tc.npy', np.array((M_Tc, Cv_Tc, chi_Tc)))
 
-        plt.subplot(2,2,3)
-        plt.plot(T_arr, E_mean_sqrd[i],label='L=%i' % L_arr[i])
-        if i == int(ylen-1):
-            plt.title(r'Average squared energy, $\langle E^2 \rangle$')
-            plt.ylabel(r'$\langle E^2 \rangle\ [J^2]$')
-            plt.xlabel('Temperature')
-            plt.legend()
 
-        plt.subplot(2,2,4)
-        plt.plot(T_arr, M_mean_sqrd[i],label='L=%i' % L_arr[i])
-        if i == int(ylen-1):
-            plt.title(r'Average squared magnetisation, $\langle M^2 \rangle$')
-            plt.ylabel(r'$\langle M^2 \rangle$')
-            plt.xlabel('Temperature')
-            plt.legend()
-    plt.show()'''
-compile_func()
-calc_func()
-#plot_func()
+
+
+#compile_func()
+#calc_func()
+plot_func()

@@ -38,10 +38,11 @@ def plot_burn_in_no():
     plt.figure(figsize=(10,10))
     for j in range(len(L_arr)):
         for k in range(len(T_arr)):
-            plt.plot(data[:,j,k], label='L=%i, T=%.2f' % (L_arr[j], T_arr[k]))
+            plt.plot(N_arr,data[:,j,k]/N_arr, label='L=%i, T=%.2f' % (L_arr[j], T_arr[k]))
     plt.xlabel('# of Monte Carlo cycles')
     plt.ylabel('Relative # of burn cycles needed, #/N')
     plt.legend()
+    plt.savefig('burn_in.png')
     plt.show()
 
 plot_burn_in_no()

@@ -1,7 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-def expectation_func(values_inn, squared=False):
+def expectation_func(values_inn, type='energy',squared=False):
     max_ = np.max(values_inn)
     min_ = np.min(values_inn)
     if type=='magnetisation':

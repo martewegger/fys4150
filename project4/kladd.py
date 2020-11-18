@@ -2,40 +2,108 @@ import numpy as np
 from run import *
 import matplotlib.pyplot as plt
 from probability import *
-
-burn_in_no = np.loadtxt('burn_in_no_2e+06.txt')
-T_arr = np.arange(2,2.3+0.05,0.05)
-L_arr = np.array((40,60,80,100))
 N_cycles = 1e6
-L = 40; T = 2
-L2 = len(T_arr)*len(L_arr)
-'''
-for i, L in enumerate(L_arr):
-    for j,T in enumerate(T_arr):
-        print((i+1)*(j+1),"/", L2, end = "\r")
-        run_func(temp = T_arr[j], len = L_arr[i], initial_state="random", MC_cycles = N_cycles, n = burn_in_no[i,j])
-        E, M, E2, M2 = np.loadtxt('data.txt')
-        print(M2)'''
+MC_array = np.arange(N_cycles)
+def calc_plot(L=20, init_state='random'):
+    print(init_state)
+    T=2.4
+    #Energy
+    print('T = ', T)
+    run_func(temp = T, len = L, initial_state=init_state, MC_cycles = N_cycles)
+    E = np.transpose(np.loadtxt("Energy.txt"))
+    median1 = np.median(E)
+    if init_state=='random':
+        indx1 = np.where(E<=median1)[0][0]
+    else:
+        indx1 = np.where(E>=median1)[0][0]
+    E_mean = np.cumsum(E)/(MC_array+1)
+
+    print('total Std = ', np.std(E))
+    print('actual Std = ', np.std(E[indx1:]))
+    print('\n')
+
+    plt.figure(figsize=(10,10))
+    plt.title(r'Energy evolution for $T=%g$ with %s initiation' % (T, init_state))
+    #plt.axvline(MC_array[indx1],c='k',ls = 'dashed')
+    plt.plot(MC_array, E, label='E')
+    plt.plot(MC_array, E_mean, label=r'$\langle E\rangle$')
+    plt.axhline(median1, c='r', ls = 'dashed',label='$E_{eq} = %i$' % median1)
+    plt.ylabel('Energy $[J]$')
+    plt.xlabel('# of Monte Carlo cycles')
+    plt.legend(loc='upper right')
+    plt.savefig('E_%i_%s.png' % (T,init_state))
+
+
+    #Magnetisation
+    run_func(temp = T, len = L, initial_state=init_state, MC_cycles = N_cycles)
+    M = np.abs(np.transpose(np.loadtxt("magnetisation.txt")))
+    M_mean = np.cumsum(M)/(MC_array+1)
+
+    plt.figure(figsize=(10,10))
+    plt.title(r'Magnetisation for $T=%g$ with %s initiation' % (T, init_state))
+
+    plt.plot(MC_array, M, label=r'$|M|$')
+    plt.plot(MC_array, M_mean, label=r'$\langle |M|\rangle$')
+    plt.ylabel('Magnetisation $[J]$')
+    plt.xlabel('# of Monte Carlo cycles')
+    plt.legend(loc='upper right')
+    plt.savefig('M_%i_%s.png' % (T,init_state))
+
+    #probability distribution
+    plt.figure(figsize=(10,10))
+    probability_func(E[indx1:], '%s initial state, T=%g' % (init_state,T))
+    print('Equilibrium situation reached after %i MC cycles with %s initial state' % (MC_array[indx1], init_state))
+    plt.savefig('energies_%i_%s.png' % (T,init_state))
+
+
+    T = 1
+    print('T = ', T)
+    #Energy
+    run_func(temp = T, len = L, initial_state=init_state, MC_cycles = N_cycles)
+    E2 = np.transpose(np.loadtxt("Energy.txt"))
+    median2 = np.median(E2)
+    if init_state=='random':
+        indx2 = np.where(E2<=median2)[0][0]
+    else:
+        indx2 = np.where(E2>=median2)[0][0]
+    E2_mean= np.cumsum(E2)/(MC_array+1)
+
+    print('total Std = ', np.std(E2))
+    print('actual Std = ', np.std(E2[indx2:]))
+    print('\n')
+
+    plt.figure(figsize=(10,10))
+    plt.title(r'Energy evolution for $T=%g$ with %s initiation' % (T,init_state))
+    #plt.axvline(MC_array[indx2],c='k',ls = 'dashed')
+    plt.plot(MC_array, E2, label='E')
+    plt.plot(MC_array, E2_mean, label=r'$\langle E\rangle$')
+    plt.axhline(median2, c='r', ls = 'dashed',label='$E_{eq} = %i$' % median2)
+    plt.ylabel('Energy $[J]$')
+    plt.xlabel('# of Monte Carlo cycles')
+    plt.legend(loc='upper right')
+    plt.savefig('E_%i_%s.png' % (T,init_state))
+
+
+    #Magnetisation
+    run_func(temp = T, len = L, initial_state=init_state, MC_cycles = N_cycles)
+    M2 = np.abs(np.transpose(np.loadtxt("magnetisation.txt")))
+    M2_mean = np.cumsum(M2)/(MC_array+1)
+
+    plt.figure(figsize=(10,10))
+    plt.title(r'Magnetisation for $T=%g$ with %s initiation' % (T,init_state))
+
+    plt.plot(MC_array, M2, label=r'$|M|$')
+    plt.plot(MC_array, M2_mean, label=r'$\langle |M|\rangle$')
+    plt.ylabel('Magnetisation $[J]$')
+    plt.xlabel('# of Monte Carlo cycles')
+    plt.legend(loc='upper right')
+    plt.savefig('M_%i_%s.png' % (T,init_state))
+
+    #Probability distribution
+    plt.figure(figsize=(10,10))
+    probability_func(E2[indx2:], '%s initial state, T=%g' % (init_state,T))
+    print('Equilibrium situation reached after %i MC cycles with %s initial state' % (MC_array[indx2], init_state))
+    plt.savefig('energies_%i_%s.png' % (T,init_state))
 #compile_func()
-'''
-print(burn_in_no[0,0])
-
-run_func(temp = T_arr[0], len =L_arr[0], initial_state="random", MC_cycles = N_cycles, n =burn_in_no[0,0])
-#E, M, E2, M2 = np.loadtxt('data.txt')
-M = np.loadtxt('magnetisation.txt')
-#E = np.loadtxt('Energy.txt')
-M_mean = expectation_func(M)
-probability_func(M, in_label='magnetisation')
-plt.show()'''
-
-#E_mean = expectation_func(E)
-#M_mean = expectation_func(M)
-#E_mean_2 = expectation_func(E, squared=True)
-#M_mean_2 = expectation_func(M, squared=True)
-#print(E_mean, M_mean, E_mean_2, M_mean_2)
-#plt.plot(np.arange(N_cycles), M)
-#plt.show()
-'''plt.plot(np.arange(N_cycles), E)
-plt.show()'''
-#probability_func(M, in_label='magnetisation')
-print(np.load('E_M_E2_M2.npy').shape)
+calc_plot(init_state="random")
+calc_plot(init_state='ordered')

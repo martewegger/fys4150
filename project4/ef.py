@@ -9,15 +9,14 @@ def d_func(T=1, N_cycles = 1e5):
     print('T = ', T)
     MC_array = np.arange(N_cycles)
 
-    run_func(temp = T, len = 20, initial_state="random", MC_cycles = N_cycles)
+    run_func(temp = T, len = 40, initial_state="random", MC_cycles = N_cycles)
     energies_disordered = np.transpose(np.loadtxt("Energy.txt"))
     #print('Variance = ', np.var(energies_disordered))
     #print('RMS = ', np.std(energies_disordered))
     median = np.median(energies_disordered)
     indx1 = np.where(energies_disordered==median)[0][0]
 
-
-    run_func(temp = T, len = 20, initial_state="ordered", MC_cycles = N_cycles)
+    run_func(temp = T, len = 40, initial_state="ordered", MC_cycles = N_cycles)
     energies_ordered = np.transpose(np.loadtxt("Energy.txt"))
     #print('Variance = ', np.var(energies_ordered))
     #print('RMS = ', np.std(energies_ordered))
@@ -65,7 +64,8 @@ def d_func(T=1, N_cycles = 1e5):
 
 
 #compile_func()
-d_func(T=1, N_cycles=5e5)
+#d_func(T=1, N_cycles=5e5)
+#d_func(T=2.4, N_cycles=5e5)
 d_func(T=2.4, N_cycles=5e5)
 '''
 T_arr = np.linspace(2,2.3,7)

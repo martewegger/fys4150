@@ -138,8 +138,6 @@ void Ising2D::Metropolis_algo(int i, int j){ //de jeg vil sende inn, sample i,j{
   }
   m_E += m_dE;
   m_M += m_dM;
-
-
 }
 
 

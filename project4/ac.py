@@ -11,14 +11,19 @@ def exact_2by2_func(T_arr):
     Chi = (32*np.exp(8*beta) + 32)/(Z*T_arr)
     return E, M, C_V, Chi
 
-def numerical_2by2_func(T_arr):
-    energies, magnetisation = ...
+def numerical_2by2_func(T):
+    L=2
+    N_cycles = 1e5
+    init_state = 'random'
+    run_func(temp = T, len = L, initial_state=init_state, MC_cycles = N_cycles)
+    energies = np.transpose(np.loadtxt('energy.txt'))
+    magnetisation = np.transpose(np.loadtxt('magnetisation.txt'))
     E = np.mean(energies)
     E2 = np.mean(energies**2)
     M = np.mean(magnetisation)
     M2 = np.mean(magnetisation**2)
-    C_V = (E2 - E**2)/T_arr
-    Chi = (M2 - M**2)/T_arr
+    C_V = (E2 - E**2)/T
+    Chi = (M2 - M**2)/T
     return E, M, C_V, Chi
 
 def plotter_2by2_func(T_arr):
@@ -58,4 +63,6 @@ def plotter_2by2_func(T_arr):
 
 if __name__ == "__main__":
     T_arr = np.linspace(2.1,2.4,7)
-    plotter_2by2_func(T_arr)
+    print(numerical_2by2_func(1))
+    print(exact_2by2_func(1))
+    #plotter_2by2_func(T_arr)

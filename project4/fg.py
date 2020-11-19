@@ -45,7 +45,7 @@ def calc_func():
 
 
 def plot_func():
-    N_cycles = 1e6
+    N_cycles = 5e5
     T0 = 2.1; T1 = 2.4
     dT = 0.005
     N = int(np.abs(T1-T0)//dT)
@@ -117,7 +117,7 @@ def plot_func():
     plt.figure(figsize=(10,10))
     plt.title(r'$T_c$ comparison')
     Tc_L_infty = Tc-1/L_arr
-    plt.plot(L_arr, Tc_L_infty,'x',c='r', label=r'Computed, $T_c = %.3f [k_B T/J]$ '% np.mean(Tc_L_infty))
+    plt.plot(L_arr, Tc_L_infty,'x',c='r')
     plt.plot(L_arr, Tc_L_infty,c='blue')
     plt.axhline(2.269,c='green', label=r'Expected, $T_c= 2.269[k_B T/J]$')
     plt.xlabel('L')
@@ -133,4 +133,4 @@ def plot_func():
 
 #compile_func()
 #calc_func()
-#plot_func()
+plot_func()

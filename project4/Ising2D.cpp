@@ -82,7 +82,7 @@ void Ising2D::Monte_Carlo(int MC, int n){  //n er number of spins?
     y = int_dist(generator);
     Metropolis_algo(x, y);
     m_energies[i] = m_E;
-    m_magnetisation[i] = abs(m_M);
+    m_magnetisation[i] = m_M;
     //m_E_mean += m_E;
     //m_M_mean += m_M;
     //m_E_mean_squared += m_E*m_E;

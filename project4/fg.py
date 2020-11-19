@@ -21,12 +21,13 @@ def calc_func():
     T_arr = np.linspace(T0,T1,N+2)
 
     L_arr = np.array((40,60,80,100))
-    burn_in_no = np.ones((len(L_arr),len(T_arr)))*4e5
+    burn_in_no = np.ones((len(L_arr),len(T_arr)))*1#2e5
     E_mean = np.zeros((len(L_arr),len(T_arr)))
     M_mean = np.zeros((len(L_arr),len(T_arr)))
     E_mean_sqrd = np.zeros((len(L_arr),len(T_arr)))
     M_mean_sqrd = np.zeros((len(L_arr),len(T_arr)))
-    N_cycles = 5e5
+    M_mean_abs = np.zeros((len(L_arr),len(T_arr)))
+    N_cycles = 1e3
     ylen, xlen = E_mean.shape
     L2 = xlen*ylen
     a=0
@@ -38,20 +39,21 @@ def calc_func():
             E = np.loadtxt('Energy.txt')
             M = np.loadtxt('magnetisation.txt')
             E_mean[i,j] = np.mean(E)#expectation_func(E)
-            M_mean[i,j] = np.mean(np.abs(M))#expectation_func(np.abs(M),type='magnetisation')
+            M_mean[i,j] = np.mean(M)
+            M_mean_abs = np.mean(np.abs(M))
             E_mean_sqrd[i,j] = np.mean(E**2)#expectation_func(E,squared=True)
             M_mean_sqrd[i,j] = np.mean(M**2)#expectation_func(M, squared=True, type='magnetisation')
-    np.save('E_M_E2_M2_%.e2.npy'% N_cycles, np.array((E_mean, M_mean, E_mean_sqrd, M_mean_sqrd)))
+    np.save('E_M_E2_M2_test.npy'% N_cycles, np.array((E_mean, M_mean,M_mean_abs,E_mean_sqrd, M_mean_sqrd)))
 
 
 def plot_func():
-    N_cycles = 1e6
+    N_cycles = 5e5
     T0 = 2.1; T1 = 2.4
     dT = 0.005
     N = int(np.abs(T1-T0)//dT)
     T_arr = np.linspace(T0,T1,N+2)
     L_arr = np.array((40,60,80,100))
-    E_mean, M_mean, E_mean_sqrd, M_mean_sqrd = np.load('E_M_E2_M2_1e6.npy')
+    E_mean, M_mean,M_mean_abs,E_mean_sqrd, M_mean_sqrd = np.load('E_M_E2_M2_test.npy')
     ylen, xlen = E_mean.shape
 
     Cv = Cv_func(E_mean, E_mean_sqrd, T_arr[np.newaxis])
@@ -67,7 +69,7 @@ def plot_func():
     plt.ylabel(r'$\langle E \rangle/L^2$')
     plt.xlabel('Temperature')
     plt.legend()
-    plt.savefig('energy.png')
+    #plt.savefig('energy.png')
 
     tol = 1e1  # Choose a tolerance
     M_indx = np.zeros((ylen))
@@ -79,7 +81,7 @@ def plot_func():
     plt.ylabel(r'$\langle |M| \rangle/L^2$')
     plt.xlabel('Temperature')
     plt.legend()
-    plt.savefig('magnetisation.png')
+    #plt.savefig('magnetisation.png')
 
     Cv_indx = np.zeros((ylen))
     Tc = np.zeros((ylen))
@@ -94,7 +96,7 @@ def plot_func():
     plt.ylabel(r'$C_v/L^2$')
     plt.xlabel('Temperature')
     plt.legend()
-    plt.savefig('heat_capacity.png')
+    #plt.savefig('heat_capacity.png')
 
     chi_indx = np.zeros((ylen))
     plt.figure(figsize=(10,10))
@@ -105,7 +107,7 @@ def plot_func():
     plt.xlabel('Temperature')
     plt.legend()
 
-    plt.savefig('susceptibility.png')
+    #plt.savefig('susceptibility.png')
     #plt.show()
 
     Tc_file = open('Tc.txt', 'w')
@@ -123,7 +125,7 @@ def plot_func():
     plt.xlabel('L')
     plt.ylabel('Temperature')
     plt.legend()
-    plt.savefig('Tc.png')
+    #plt.savefig('Tc.png')
     plt.show()
 
 

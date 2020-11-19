@@ -35,6 +35,7 @@ def probability_func(energies, in_label, plot=True):
         plt.axvline(expected,c="r",ls="--", label=r'$\langle E\rangle$ = %.2f' % expected)
         plt.legend(fontsize=16)
         plt.xlabel("Energies", fontsize=16)
+        plt.ylabel(r'$P(E)$')
         #plt.show()
 
 

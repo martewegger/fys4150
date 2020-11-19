@@ -3,7 +3,7 @@ from run import *
 import matplotlib.pyplot as plt
 from probability import *
 from astropy import constants
-plt.rcParams['font.size'] = 14
+plt.rcParams['font.size'] = 18
 
 
 def Cv_func(E_mean, E_mean_sqrd, T):
@@ -26,7 +26,7 @@ def calc_func():
     M_mean = np.zeros((len(L_arr),len(T_arr)))
     E_mean_sqrd = np.zeros((len(L_arr),len(T_arr)))
     M_mean_sqrd = np.zeros((len(L_arr),len(T_arr)))
-    N_cycles = 3e5
+    N_cycles = 1e6
     ylen, xlen = E_mean.shape
     L2 = xlen*ylen
     a=0
@@ -45,13 +45,13 @@ def calc_func():
 
 
 def plot_func():
-    N_cycles = 3e5
+    N_cycles = 1e6
     T0 = 2.1; T1 = 2.4
     dT = 0.005
     N = int(np.abs(T1-T0)//dT)
     T_arr = np.linspace(T0,T1,N+2)
     L_arr = np.array((40,60,80,100))
-    E_mean, M_mean, E_mean_sqrd, M_mean_sqrd = np.load('E_M_E2_M2_3e5.npy')
+    E_mean, M_mean, E_mean_sqrd, M_mean_sqrd = np.load('E_M_E2_M2_5e5.npy')
     ylen, xlen = E_mean.shape
 
     Cv = Cv_func(E_mean, E_mean_sqrd, T_arr[np.newaxis])
@@ -60,28 +60,30 @@ def plot_func():
     L2 = L_arr*L_arr
 
     color = ['blue','orange','green','red']
-    plt.figure(figsize=(9,9))
+    plt.figure(figsize=(10,10))
     plt.title(r'Energy, $\langle E \rangle$')
     for i in range(len(L_arr)):
         plt.plot(T_arr,E_mean[i]/L2[i],c=color[i], label='L=%i' % L_arr[i])
     plt.ylabel(r'$\langle E \rangle/L^2$')
+    plt.xlabel('Temperature')
     plt.legend()
     plt.savefig('energy.png')
 
     tol = 1e1  # Choose a tolerance
     M_indx = np.zeros((ylen))
 
-    plt.figure(figsize=(9,9))
+    plt.figure(figsize=(10,10))
     plt.title(r'Magnetisation, $\langle |M| \rangle$')
     for i in range(len(L_arr)):
         plt.plot(T_arr,M_mean[i]/L2[i],c=color[i], label='L=%i' % L_arr[i])
     plt.ylabel(r'$\langle |M| \rangle/L^2$')
+    plt.xlabel('Temperature')
     plt.legend()
     plt.savefig('magnetisation.png')
 
     Cv_indx = np.zeros((ylen))
     Tc = np.zeros((ylen))
-    plt.figure(figsize=(9,9))
+    plt.figure(figsize=(10,10))
     plt.title(r'Specific heat capacity, $C_v$')
     #Tc = np.ones((ylen))*2.3
     for i in range(len(L_arr)):
@@ -95,7 +97,7 @@ def plot_func():
     plt.savefig('heat_capacity.png')
 
     chi_indx = np.zeros((ylen))
-    plt.figure(figsize=(9,9))
+    plt.figure(figsize=(10,10))
     plt.title(r'Susceptibility, $\chi$')
     for i in range(len(L_arr)):
         plt.plot(T_arr,chi[i]/L2[i], c=color[i],label='L=%i' % L_arr[i])
@@ -112,8 +114,8 @@ def plot_func():
     Tc_file.close()
     #np.save('Tc.npy', np.array((M_Tc, Cv_Tc, chi_Tc)))
 
-    plt.figure(figsize=(9,9))
-    plt.title('tittel')
+    plt.figure(figsize=(10,10))
+    plt.title(r'$T_c$ comparison')
     Tc_L_infty = Tc-1/L_arr
     plt.plot(L_arr, Tc_L_infty,'x',c='r', label=r'Computed, $T_c = %.3f [k_B T/J]$ '% np.mean(Tc_L_infty))
     plt.plot(L_arr, Tc_L_infty,c='blue')
@@ -131,4 +133,4 @@ def plot_func():
 
 #compile_func()
 #calc_func()
-plot_func()
+#plot_func()

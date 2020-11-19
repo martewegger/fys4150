@@ -2,7 +2,7 @@ from run import *
 import numpy as np
 import matplotlib.pyplot as plt
 from probability import *
-plt.rcParams['font.size'] = 14
+plt.rcParams['font.size'] = 18
 
 
 def d_func(T=1, N_cycles = 1e5):

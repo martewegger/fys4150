@@ -2,6 +2,7 @@ import numpy as np
 from run import *
 import matplotlib.pyplot as plt
 from probability import *
+plt.rcParams['font.size'] = 18
 N_cycles = 1e6
 MC_array = np.arange(N_cycles)
 def calc_plot(L=20, init_state='random'):
@@ -28,8 +29,8 @@ def calc_plot(L=20, init_state='random'):
     #plt.axvline(MC_array[indx1],c='k',ls = 'dashed')
     plt.plot(MC_array, E/L2, label='E')
     plt.plot(MC_array, E_mean/L2, label=r'$\langle E\rangle$')
-    plt.axhline(median1/L2, c='r', ls = 'dashed',label='$E_{eq} = %i$' % median1)
-    plt.ylabel('Energy $[J]$')
+    plt.axhline(median1/L2, c='r', ls = 'dashed',label='$E_{eq} = %.2f$' % (median1/L2))
+    plt.ylabel(r'Energy/$L^2$ ')
     plt.xlabel('# of Monte Carlo cycles')
     plt.legend(loc='upper right')
     plt.savefig('E_%i_%s.png' % (T,init_state))
@@ -45,7 +46,7 @@ def calc_plot(L=20, init_state='random'):
 
     plt.plot(MC_array, M/L2, label=r'$|M|$')
     plt.plot(MC_array, M_mean/L2, label=r'$\langle |M|\rangle$')
-    plt.ylabel('Magnetisation $[J]$')
+    plt.ylabel(r'Magnetisation/$L^2$')
     plt.xlabel('# of Monte Carlo cycles')
     plt.legend(loc='upper right')
     plt.savefig('M_%i_%s.png' % (T,init_state))
@@ -78,8 +79,8 @@ def calc_plot(L=20, init_state='random'):
     #plt.axvline(MC_array[indx2],c='k',ls = 'dashed')
     plt.plot(MC_array, E2/L2, label='E')
     plt.plot(MC_array, E2_mean/L2, label=r'$\langle E\rangle$')
-    plt.axhline(median2/L2, c='r', ls = 'dashed',label='$E_{eq} = %i$' % median2)
-    plt.ylabel('Energy $[J]$')
+    plt.axhline(median2/L2, c='r', ls = 'dashed',label='$E_{eq} = %.2f$' % (median2/L2))
+    plt.ylabel(r'Energy/$L^2$ ')
     plt.xlabel('# of Monte Carlo cycles')
     plt.legend(loc='upper right')
     plt.savefig('E_%i_%s.png' % (T,init_state))
@@ -95,7 +96,7 @@ def calc_plot(L=20, init_state='random'):
 
     plt.plot(MC_array, M2/L2, label=r'$|M|$')
     plt.plot(MC_array, M2_mean/L2, label=r'$\langle |M|\rangle$')
-    plt.ylabel('Magnetisation $[J]$')
+    plt.ylabel(r'Magnetisation/$L^2$')
     plt.xlabel('# of Monte Carlo cycles')
     plt.legend(loc='upper right')
     plt.savefig('M_%i_%s.png' % (T,init_state))
@@ -108,3 +109,4 @@ def calc_plot(L=20, init_state='random'):
 #compile_func()
 calc_plot(init_state="random")
 calc_plot(init_state='ordered')
+plt.show()

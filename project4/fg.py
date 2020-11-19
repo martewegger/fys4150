@@ -21,12 +21,12 @@ def calc_func():
     T_arr = np.linspace(T0,T1,N+2)
 
     L_arr = np.array((40,60,80,100))
-    burn_in_no = np.ones((len(L_arr),len(T_arr)))*3e5
+    burn_in_no = np.ones((len(L_arr),len(T_arr)))*4e5
     E_mean = np.zeros((len(L_arr),len(T_arr)))
     M_mean = np.zeros((len(L_arr),len(T_arr)))
     E_mean_sqrd = np.zeros((len(L_arr),len(T_arr)))
     M_mean_sqrd = np.zeros((len(L_arr),len(T_arr)))
-    N_cycles = 1e6
+    N_cycles = 5e5
     ylen, xlen = E_mean.shape
     L2 = xlen*ylen
     a=0
@@ -41,17 +41,17 @@ def calc_func():
             M_mean[i,j] = np.mean(np.abs(M))#expectation_func(np.abs(M),type='magnetisation')
             E_mean_sqrd[i,j] = np.mean(E**2)#expectation_func(E,squared=True)
             M_mean_sqrd[i,j] = np.mean(M**2)#expectation_func(M, squared=True, type='magnetisation')
-    np.save('E_M_E2_M2_%.e.npy'% N_cycles, np.array((E_mean, M_mean, E_mean_sqrd, M_mean_sqrd)))
+    np.save('E_M_E2_M2_%.e2.npy'% N_cycles, np.array((E_mean, M_mean, E_mean_sqrd, M_mean_sqrd)))
 
 
 def plot_func():
-    N_cycles = 5e5
+    N_cycles = 1e6
     T0 = 2.1; T1 = 2.4
     dT = 0.005
     N = int(np.abs(T1-T0)//dT)
     T_arr = np.linspace(T0,T1,N+2)
     L_arr = np.array((40,60,80,100))
-    E_mean, M_mean, E_mean_sqrd, M_mean_sqrd = np.load('E_M_E2_M2_5e5.npy')
+    E_mean, M_mean, E_mean_sqrd, M_mean_sqrd = np.load('E_M_E2_M2_1e6.npy')
     ylen, xlen = E_mean.shape
 
     Cv = Cv_func(E_mean, E_mean_sqrd, T_arr[np.newaxis])

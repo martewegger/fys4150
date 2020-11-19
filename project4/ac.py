@@ -19,7 +19,7 @@ def numerical_2by2_func(T):
     L=2
     N_cycles = 1e5
     init_state = 'random'
-    # run_func(temp = T, len = L, initial_state=init_state, MC_cycles = N_cycles)
+    run_func(temp = T, len = L, initial_state=init_state, MC_cycles = N_cycles)
     energies = np.transpose(np.loadtxt('energy.txt'))
     magnetisation = np.transpose(np.loadtxt('magnetisation.txt'))
     # print(np.where(magnetisation<0))

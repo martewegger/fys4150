@@ -12,7 +12,7 @@ T_arr = np.linspace(T0,T1,N+2)
 
 
 init_state='random'
-T=2.4;L=20
+T=2.4;L=100
 run_func(temp = T, len = L, initial_state=init_state, MC_cycles = N_cycles)
 L2 = L**2
 M = np.transpose(np.loadtxt('magnetisation.txt'))

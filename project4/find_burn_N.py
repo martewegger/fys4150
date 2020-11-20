@@ -2,7 +2,7 @@ from run import *
 import numpy as np
 import matplotlib.pyplot as plt
 plt.rcParams['font.size'] = 18
-
+init = 'random'
 T = 2.4
 L = 100
 L2 = L*L
@@ -16,14 +16,10 @@ print(indx1)
 print('#burn in cycles needed= ',indx1+1)
 MC_short = np.arange(N_cycles-indx1)
 E_mean = np.cumsum(E)/(MC_array+1)
-print(E[indx1:].shape, MC_array[indx1:].shape)
 
 print('total Std = ', np.std(E))
 print('actual Std = ', np.std(E[indx1:]))
 
-print('\n')
-
-print(E_mean[int(1e5)],E_mean[int(5e5)])
 
 plt.figure(figsize=(10,10))
 plt.title(r'Energy evolution for $T=%g$ with %s initiation' % (T, init_state))

@@ -1,48 +1,38 @@
 from run import *
 import numpy as np
 import matplotlib.pyplot as plt
-plt.rcParams['font.size'] = 14
+plt.rcParams['font.size'] = 18
 
-def find_burn_N_func():
-    N_list = [1e5, 2e5, 3e5,4e5,5e5]
-    N_list=np.linspace(5e5,2e6,5)
-    T=2.4
-    L = 100
-    results = np.zeros((len(N_list)))
-    #file = open('burn_in_no_final.txt', 'w')
-    file = open('burn_in_no_final.txt', 'w')
-    a=0
-    for i,N in enumerate(N_list):
-        a+=1
-        print(a,"/", len(N_list), end = "\r")
-        run_func(temp = T, len = L, initial_state="random", MC_cycles= N)
-        energies = np.transpose(np.loadtxt("Energy.txt"))
-        median = np.median(energies)
-        sigma=np.std(energies[np.where(energies<=median)[0][0]:])
-        indx = np.where(energies<=median+sigma)[0][0]
-        results[i] = indx+1
-        file.write('%10s \n' % results[i])
-    print(results)
-    file.close()
-N_list = [1e5, 3e5, 5e5, 8e5,1e6,1.5e6]
+T = 2.4
+L = 100
+L2 = L*L
+print('T = ', T)
+run_func(temp = T, len = L, initial_state=init_state, MC_cycles = N_cycles)
+E = np.transpose(np.loadtxt("Energy.txt"))
+median1 = np.median(E)
+sigma=np.std(E[np.where(E<=median1)[0][0]:])
+indx1 = np.where(E<=median1+sigma)[0][0]
+print(indx1)
+print('#burn in cycles needed= ',indx1+1)
+MC_short = np.arange(N_cycles-indx1)
+E_mean = np.cumsum(E)/(MC_array+1)
+print(E[indx1:].shape, MC_array[indx1:].shape)
 
-#compile_func()
-#find_burn_N_func()
+print('total Std = ', np.std(E))
+print('actual Std = ', np.std(E[indx1:]))
 
+print('\n')
 
-def plot_burn_in_no():
-    T = 2.4
-    L = 100
-    N_arr = [1e5, 3e5, 5e5, 8e5,1e6,1.5e6]
-    N_arr = [1e5, 2e5, 3e5,4e5,5e5]
-    N_arr=np.linspace(5e5,2e6,5)
-    data = np.loadtxt('burn_in_no_final.txt')
-    plt.figure(figsize=(10,10))
-    plt.plot(N_arr,data, label='L=%i, T=%.2f' % (L, T))
-    plt.xlabel('# of Monte Carlo cycles')
-    plt.ylabel('Relative # of burn cycles needed, #/N')
-    plt.legend()
-    plt.savefig('burn_in.png')
-    plt.show()
+print(E_mean[int(1e5)],E_mean[int(5e5)])
 
-plot_burn_in_no()
+plt.figure(figsize=(10,10))
+plt.title(r'Energy evolution for $T=%g$ with %s initiation' % (T, init_state))
+plt.axvline(MC_array[indx1],c='k',ls = 'dashed', label='Burn in period')
+plt.plot(MC_array, E/L2, label='E')
+plt.plot(MC_array, E_mean/L2, label=r'$\langle E\rangle$')
+plt.axhline(median1/L2, c='r', ls = 'dashed',label='$E_{eq} = %.3f$' % (median1/L2))
+plt.ylabel(r'Energy$/L^2 $')
+plt.xlabel('# of Monte Carlo cycles')
+plt.legend(loc='upper right')
+plt.savefig('burn_illu.png')
+plt.show()

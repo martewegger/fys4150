@@ -21,13 +21,13 @@ def calc_func():
     T_arr = np.linspace(T0,T1,N+2)
 
     L_arr = np.array((40,60,80,100))
-    burn_in_no = np.ones((len(L_arr),len(T_arr)))*1#2e5
+    burn_in_no = np.ones((len(L_arr),len(T_arr)))*2e5
     E_mean = np.zeros((len(L_arr),len(T_arr)))
     M_mean = np.zeros((len(L_arr),len(T_arr)))
     E_mean_sqrd = np.zeros((len(L_arr),len(T_arr)))
     M_mean_sqrd = np.zeros((len(L_arr),len(T_arr)))
     M_mean_abs = np.zeros((len(L_arr),len(T_arr)))
-    N_cycles = 1e3
+    N_cycles = 5e5
     ylen, xlen = E_mean.shape
     L2 = xlen*ylen
     a=0
@@ -40,10 +40,10 @@ def calc_func():
             M = np.loadtxt('magnetisation.txt')
             E_mean[i,j] = np.mean(E)#expectation_func(E)
             M_mean[i,j] = np.mean(M)
-            M_mean_abs = np.mean(np.abs(M))
+            M_mean_abs[i,j] = np.mean(np.abs(M))
             E_mean_sqrd[i,j] = np.mean(E**2)#expectation_func(E,squared=True)
             M_mean_sqrd[i,j] = np.mean(M**2)#expectation_func(M, squared=True, type='magnetisation')
-    np.save('E_M_E2_M2_test.npy'% N_cycles, np.array((E_mean, M_mean,M_mean_abs,E_mean_sqrd, M_mean_sqrd)))
+    np.save('E_M_E2_M2_test.npy', np.array((E_mean, M_mean,M_mean_abs,E_mean_sqrd, M_mean_sqrd)))
 
 
 def plot_func():
@@ -77,7 +77,7 @@ def plot_func():
     plt.figure(figsize=(10,10))
     plt.title(r'Magnetisation, $\langle |M| \rangle$')
     for i in range(len(L_arr)):
-        plt.plot(T_arr,M_mean[i]/L2[i],c=color[i], label='L=%i' % L_arr[i])
+        plt.plot(T_arr,M_mean_abs[i]/L2[i],c=color[i], label='L=%i' % L_arr[i])
     plt.ylabel(r'$\langle |M| \rangle/L^2$')
     plt.xlabel('Temperature')
     plt.legend()

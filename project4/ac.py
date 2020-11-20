@@ -25,13 +25,14 @@ def numerical_2by2_func(T):
     # print(np.where(magnetisation<0))
     E = np.mean(energies)
     E2 = np.mean(energies**2)
-    M = np.mean(np.abs(magnetisation))
+    M = np.mean(magnetisation)
+    M_abs = np.mean(np.abs(magnetisation))
     M2 = np.mean(magnetisation**2)
     C_V = (E2 - E**2)/T**2
     Chi = (M2 - M**2)/T
     # print(M2)
     # print(C_V)
-    return E, M, C_V, Chi
+    return E, M_abs, C_V, Chi
 
 if __name__ == "__main__":
     print(exact_2by2_func(1))

@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 from probability import *
 N_cycles = 1e6
 MC_array = np.arange(N_cycles)
+plt.rcParams['font.size'] = 18
 
 T0 = 2.1; T1 = 2.4
 dT = 0.005
@@ -12,7 +13,8 @@ T_arr = np.linspace(T0,T1,N+2)
 
 
 init_state='random'
-T=2.4;L=100
+T=2.4;L=60
+'''
 run_func(temp = T, len = L, initial_state=init_state, MC_cycles = N_cycles)
 L2 = L**2
 M = np.transpose(np.loadtxt('magnetisation.txt'))
@@ -20,9 +22,11 @@ M_mean = np.cumsum(M)/(MC_array+1)
 N_cycles = np.arange(len(M))
 plt.plot(N_cycles, M_mean/L2)
 plt.plot(N_cycles, M/L2)
-plt.show()
+plt.show()'''
 #Energy
-'''
+T = 2.4
+L = 100
+L2 = L*L
 print('T = ', T)
 run_func(temp = T, len = L, initial_state=init_state, MC_cycles = N_cycles)
 E = np.transpose(np.loadtxt("Energy.txt"))
@@ -44,16 +48,18 @@ print(E_mean[int(1e5)],E_mean[int(5e5)])
 
 plt.figure(figsize=(10,10))
 plt.title(r'Energy evolution for $T=%g$ with %s initiation' % (T, init_state))
-plt.axvline(MC_array[indx1],c='k',ls = 'dashed')
-plt.plot(MC_array, E, label='E')
-plt.plot(MC_array, E_mean, label=r'$\langle E\rangle$')
-plt.axhline(median1, c='r', ls = 'dashed',label='$E_{eq} = %i$' % median1)
-plt.ylabel('Energy $[J]$')
+plt.axvline(MC_array[indx1],c='k',ls = 'dashed', label='Burn in period')
+plt.plot(MC_array, E/L2, label='E')
+plt.plot(MC_array, E_mean/L2, label=r'$\langle E\rangle$')
+plt.axhline(median1/L2, c='r', ls = 'dashed',label='$E_{eq} = %.3f$' % (median1/L2))
+plt.ylabel(r'Energy$/L^2 $')
 plt.xlabel('# of Monte Carlo cycles')
 plt.legend(loc='upper right')
+plt.savefig('burn_illu.png')
+plt.show()
 '''
 
-'''
+
 #run_func(temp = T, len = L, initial_state=init_state, MC_cycles = N_cycles)
 M = np.abs(np.transpose(np.loadtxt("magnetisation.txt")))
 M_mean = np.cumsum(M[indx1:])/(MC_array[indx1:]+1)

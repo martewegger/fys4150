@@ -19,12 +19,11 @@ def calc_plot(L=20, init_state='random'):
     else:
         indx1 = np.where(E>=median1)[0][0]
     E_mean = np.cumsum(E)/(MC_array+1)
-
     print('total Std = ', np.std(E))
     print('actual Std = ', np.std(E[indx1:]))
     print('\n')
 
-    plt.figure(figsize=(10,10))
+    plt.figure(figsize=(12,12))
     plt.title(r'Energy evolution for $T=%g$ with %s initiation' % (T, init_state))
     #plt.axvline(MC_array[indx1],c='k',ls = 'dashed')
     plt.plot(MC_array, E/L2, label='E')
@@ -38,10 +37,10 @@ def calc_plot(L=20, init_state='random'):
 
     #Magnetisation
     run_func(temp = T, len = L, initial_state=init_state, MC_cycles = N_cycles)
-    M = np.transpose(np.loadtxt("magnetisation.txt"))
+    M = np.abs(np.transpose(np.loadtxt("magnetisation.txt")))
     M_mean = np.cumsum(M)/(MC_array+1)
 
-    plt.figure(figsize=(10,10))
+    plt.figure(figsize=(12,12))
     plt.title(r'Magnetisation for $T=%g$ with %s initiation' % (T, init_state))
 
     plt.plot(MC_array, M/L2, label=r'$|M|$')
@@ -52,7 +51,7 @@ def calc_plot(L=20, init_state='random'):
     plt.savefig('M_%i_%s.png' % (T,init_state))
 
     #probability distribution
-    plt.figure(figsize=(10,10))
+    plt.figure(figsize=(12,12))
     probability_func(E[indx1:], '%s initial state, T=%g' % (init_state,T))
     print('Equilibrium situation reached after %i MC cycles with %s initial state' % (MC_array[indx1], init_state))
     plt.savefig('energies_%i_%s.png' % (T,init_state))
@@ -74,7 +73,7 @@ def calc_plot(L=20, init_state='random'):
     print('actual Std = ', np.std(E2[indx2:]))
     print('\n')
 
-    plt.figure(figsize=(10,10))
+    plt.figure(figsize=(12,12))
     plt.title(r'Energy evolution for $T=%g$ with %s initiation' % (T,init_state))
     #plt.axvline(MC_array[indx2],c='k',ls = 'dashed')
     plt.plot(MC_array, E2/L2, label='E')
@@ -91,7 +90,7 @@ def calc_plot(L=20, init_state='random'):
     M2 = np.abs(np.transpose(np.loadtxt("magnetisation.txt")))
     M2_mean = np.cumsum(M2)/(MC_array+1)
 
-    plt.figure(figsize=(10,10))
+    plt.figure(figsize=(12,12))
     plt.title(r'Magnetisation for $T=%g$ with %s initiation' % (T,init_state))
 
     plt.plot(MC_array, M2/L2, label=r'$|M|$')
@@ -102,7 +101,7 @@ def calc_plot(L=20, init_state='random'):
     plt.savefig('M_%i_%s.png' % (T,init_state))
 
     #Probability distribution
-    plt.figure(figsize=(10,10))
+    plt.figure(figsize=(12,12))
     probability_func(E2[indx2:], '%s initial state, T=%g' % (init_state,T))
     print('Equilibrium situation reached after %i MC cycles with %s initial state' % (MC_array[indx2], init_state))
     plt.savefig('energies_%i_%s.png' % (T,init_state))

@@ -105,7 +105,7 @@ def calc_plot(L=20, init_state='random'):
     probability_func(E2[indx2:], '%s initial state, T=%g' % (init_state,T))
     print('Equilibrium situation reached after %i MC cycles with %s initial state' % (MC_array[indx2], init_state))
     plt.savefig('energies_%i_%s.png' % (T,init_state))
-#compile_func()
+compile_func()
 calc_plot(init_state="random")
 calc_plot(init_state='ordered')
 plt.show()

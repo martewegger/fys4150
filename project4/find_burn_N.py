@@ -2,7 +2,9 @@ from run import *
 import numpy as np
 import matplotlib.pyplot as plt
 plt.rcParams['font.size'] = 18
-init = 'random'
+init_state = 'random'
+N_cycles = 1e6
+MC_array = np.arange(N_cycles)
 T = 2.4
 L = 100
 L2 = L*L
@@ -12,7 +14,6 @@ E = np.transpose(np.loadtxt("Energy.txt"))
 median1 = np.median(E)
 sigma=np.std(E[np.where(E<=median1)[0][0]:])
 indx1 = np.where(E<=median1+sigma)[0][0]
-print(indx1)
 print('#burn in cycles needed= ',indx1+1)
 MC_short = np.arange(N_cycles-indx1)
 E_mean = np.cumsum(E)/(MC_array+1)

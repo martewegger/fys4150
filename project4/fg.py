@@ -13,8 +13,6 @@ def chi_func(M_mean, M_mean_sqrd, T):
     return 1/(T)*(M_mean_sqrd-M_mean**2)
 
 def calc_func():
-    #burn_in_no = np.loadtxt('burn_in_no_1e+07.txt')
-
     T0 = 2.1; T1 = 2.4
     dT = 0.005
     N = int(np.abs(T1-T0)//dT)
@@ -43,7 +41,7 @@ def calc_func():
             M_mean_abs[i,j] = np.mean(np.abs(M))
             E_mean_sqrd[i,j] = np.mean(E**2)#expectation_func(E,squared=True)
             M_mean_sqrd[i,j] = np.mean(M**2)#expectation_func(M, squared=True, type='magnetisation')
-    np.save('E_M_E2_M2_test.npy', np.array((E_mean, M_mean,M_mean_abs,E_mean_sqrd, M_mean_sqrd)))
+    np.save('E_M_E2_M2_5e5.npy', np.array((E_mean, M_mean,M_mean_abs,E_mean_sqrd, M_mean_sqrd)))
 
 
 def plot_func():
@@ -53,12 +51,11 @@ def plot_func():
     N = int(np.abs(T1-T0)//dT)
     T_arr = np.linspace(T0,T1,N+2)
     L_arr = np.array((40,60,80,100))
-    E_mean, M_mean,M_mean_abs,E_mean_sqrd, M_mean_sqrd = np.load('E_M_E2_M2_test.npy')
+    E_mean, M_mean,M_mean_abs,E_mean_sqrd, M_mean_sqrd = np.load('E_M_E2_M2_5e5.npy')
     ylen, xlen = E_mean.shape
 
     Cv = Cv_func(E_mean, E_mean_sqrd, T_arr[np.newaxis])
     chi = chi_func(M_mean, M_mean_sqrd, T_arr[np.newaxis])
-
     L2 = L_arr*L_arr
 
     color = ['blue','orange','green','red']
@@ -69,11 +66,9 @@ def plot_func():
     plt.ylabel(r'$\langle E \rangle/L^2$')
     plt.xlabel('Temperature')
     plt.legend()
-    #plt.savefig('energy.png')
+    plt.savefig('energy.png')
 
-    tol = 1e1  # Choose a tolerance
     M_indx = np.zeros((ylen))
-
     plt.figure(figsize=(10,10))
     plt.title(r'Magnetisation, $\langle |M| \rangle$')
     for i in range(len(L_arr)):
@@ -81,13 +76,12 @@ def plot_func():
     plt.ylabel(r'$\langle |M| \rangle/L^2$')
     plt.xlabel('Temperature')
     plt.legend()
-    #plt.savefig('magnetisation.png')
+    plt.savefig('magnetisation.png')
 
     Cv_indx = np.zeros((ylen))
     Tc = np.zeros((ylen))
     plt.figure(figsize=(10,10))
     plt.title(r'Specific heat capacity, $C_v$')
-    #Tc = np.ones((ylen))*2.3
     for i in range(len(L_arr)):
         Tc_indx = np.argmax(Cv[i])
         Tc[i] = T_arr[Tc_indx]
@@ -96,7 +90,7 @@ def plot_func():
     plt.ylabel(r'$C_v/L^2$')
     plt.xlabel('Temperature')
     plt.legend()
-    #plt.savefig('heat_capacity.png')
+    plt.savefig('heat_capacity.png')
 
     chi_indx = np.zeros((ylen))
     plt.figure(figsize=(10,10))
@@ -107,14 +101,13 @@ def plot_func():
     plt.xlabel('Temperature')
     plt.legend()
 
-    #plt.savefig('susceptibility.png')
+    plt.savefig('susceptibility.png')
     #plt.show()
 
     Tc_file = open('Tc.txt', 'w')
     for i in range(len(Tc)):
         Tc_file.write('%10s \n' % Tc[i])
     Tc_file.close()
-    #np.save('Tc.npy', np.array((M_Tc, Cv_Tc, chi_Tc)))
 
     plt.figure(figsize=(10,10))
     plt.title(r'$T_c$ comparison')
@@ -125,14 +118,9 @@ def plot_func():
     plt.xlabel('L')
     plt.ylabel('Temperature')
     plt.legend()
-    #plt.savefig('Tc.png')
+    plt.savefig('Tc.png')
     plt.show()
 
-
-
-
-
-
-#compile_func()
-#calc_func()
+compile_func()
+calc_func()
 plot_func()

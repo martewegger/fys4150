@@ -15,12 +15,17 @@ int main(int argc, char *argv[]){
   double dt  = atof(argv[2]);
   double dx  = atof(argv[3]);
   string method = argv[4];
+
   PDE my_instance;
   my_instance.Initialise(T_end, dt, dx); //kan ha mange ulike initializere.
   if (method=="ForwardEuler"){
     //double a = 1.;
-
     my_instance.ForwardEuler();
   }
+
+  if (method=="Crank_Nicolsen"){
+    //double a = 1.;
+    my_instance.Crank_Nicolsen();
+    }
   return 0;
 }

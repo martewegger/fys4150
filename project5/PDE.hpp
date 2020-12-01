@@ -19,12 +19,14 @@ class PDE{
 private:
   int m_Nx, m_Nt;
   double m_alpha;
-  vec m_u_old, m_u, m_r;
+  vec m_u_old, m_u, m_r, m_a, m_b, m_c;
   ofstream m_ofile;
 
 public:
   void Initialise(double T_end, double dt, double dx);
   void ForwardEuler();
+  void Solver();
+  void Thomas();
   void Crank_Nicolsen();
   void Write_to_file();
 };

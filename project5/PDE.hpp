@@ -26,7 +26,7 @@ public:
   void Initialise(double T_end, double dt, double dx);
   void ForwardEuler();
   void Solver();
-  void Thomas();
+  void BackwardEuler();
   void Crank_Nicolsen();
   void Write_to_file();
 };

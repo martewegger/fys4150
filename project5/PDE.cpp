@@ -25,12 +25,6 @@ void PDE::Initialise(double T_end, double dt, double dx){
   m_a = vec(m_Nx+1, fill::zeros);
   m_b = vec(m_Nx+1, fill::zeros);
   m_c = vec(m_Nx+1, fill::zeros);
-  for (int i = 0 ; i < m_Nx; i++){
-    m_a(i) = -m_alpha;
-    m_b(i) = 1.+2*m_alpha;
-    m_c(i) = -m_alpha;
-
-  }
   //m_u = vec(m_N+1, fill::zeros);
   //double v; //du/dt for implicit BackwardEuler
   //Praparing a file to write in.
@@ -58,6 +52,7 @@ void PDE::ForwardEuler(){
   }
 }
 
+
 void PDE::Solver(){
   //Forward part:
   for(int i = 1; i < m_Nx-1; i++){
@@ -72,19 +67,48 @@ void PDE::Solver(){
   }
 }
 
+void PDE::BackwardEuler(){
+  for (int i = 0 ; i < m_Nx; i++){
+    m_a(i) = -m_alpha;
+    m_b(i) = 1.+2*m_alpha; //why 1+2alpha here?
+    m_c(i) = -m_alpha;
+  }
+  Write_to_file();
+  for (int i=1; i<m_Nx-1;i++){ //not looping over the end points
+    //filling array with right hand side of equation
+    m_r(i) = (1.+2.*m_alpha)*m_u_old(i)-m_alpha*m_u_old(i+1)-m_alpha*m_u_old(i-1);
+  }
+  for (int ti=0; ti<m_Nt;ti++){
+    Solver();
+    Write_to_file();
+    for (int i=1; i<m_Nx-1;i++){ //not looping over the end points
+      //filling array with right hand side of equation
+      m_r(i) = m_u(i);
+      m_b(i) = 1.+2*m_alpha;
+    }
+  }
+}
+
 
 void PDE::Crank_Nicolsen(){
+  for (int i = 0 ; i < m_Nx; i++){
+    m_a(i) = -m_alpha;
+    m_b(i) = 2.+2*m_alpha;
+    m_c(i) = -m_alpha;
+  }
+  Write_to_file();
   for (int ti=0; ti<m_Nt;ti++){
     for (int i=1; i<m_Nx-1;i++){ //not looping over the end points
       //filling array with right hand side of equation
-      m_r(i) = m_alpha*m_u_old(i-1)+(1.-2.*m_alpha)*m_u_old(i) + m_alpha*m_u_old(i+1);
+      m_r(i) = m_alpha*m_u_old(i-1)+(2.-2.*m_alpha)*m_u_old(i) + m_alpha*m_u_old(i+1);
     }
     m_r(0) = 0;
     m_r(m_Nx)= 0;
     Solver();
     Write_to_file();
-    for (int xi=1; xi<m_Nx-1;xi++){
+    for (int xi=1; xi<m_Nx;xi++){
       m_u_old(xi) = m_u(xi);
+      m_b(xi) = 2.+2*m_alpha;
     }
   }
 }

@@ -26,6 +26,10 @@ int main(int argc, char *argv[]){
   if (method=="Crank_Nicolsen"){
     //double a = 1.;
     my_instance.Crank_Nicolsen();
-    }
+  }
+  if (method=="BackwardEuler"){
+    //double a = 1.;
+    my_instance.BackwardEuler();
+  }
   return 0;
 }

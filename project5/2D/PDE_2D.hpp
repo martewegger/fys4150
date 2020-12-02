@@ -23,7 +23,7 @@ private:
   ofstream m_ofile;
 
 public:
-  void Initialise(double T_end, double dt, double dxy);
+  void Initialise(double T_end, double dt, double dxy, double initial(double x, double y));
   void ForwardEuler();
   void Write_to_file();
 };

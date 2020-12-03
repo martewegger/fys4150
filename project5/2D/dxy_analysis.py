@@ -11,6 +11,7 @@ xy1 = 1
 N = 50
 dxy = np.linspace(0.005,0.2, N)
 chi_arr = np.zeros((N))
+Nxy = np.zeros((N))
 T_end = 0.02
 r = 4
 dt = dxy[0]**2/r
@@ -24,15 +25,16 @@ for i in range(N):
     data = np.loadtxt('data_2D.txt')
     xy = np.linspace(xy0,xy1,data.shape[0])
     X, Y = np.meshgrid(xy,xy)
+    Nxy[i] = len(xy)**2
     chi_arr[i] = chi_squared_func(data, analytic_func(X, Y, T_end))
 
-m, b = np. polyfit(dxy, chi_arr, 1)
-plt.figure(figsize=(9,9))
+m, b = np. polyfit(dxy, chi_arr/Nxy, 1)
+plt.figure(figsize=(10,10))
 plt.title('Stability analysis')
-plt.plot(dxy, chi_arr, 'o')
+plt.plot(dxy, chi_arr/Nxy, 'o')
 plt.plot(dxy, m*dxy + b, label='Linear fit')
 plt.xlabel(r'$\Delta (x,y)$')
-plt.ylabel(r'$\chi^2$')
+plt.ylabel(r'$\chi^2/$pixel')
 plt.legend()
 plt.savefig('dxy_stability.png')
 plt.show()

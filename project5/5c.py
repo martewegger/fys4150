@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 from astropy import constants
 plt.rcParams['font.size'] = 16
 
-dx = 0.1            # Endre her til 0.01
+dx = 0.01            # Endre her til 0.01
 r=2
 dt = dx**2/r
 T_end1 = 0.02

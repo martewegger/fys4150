@@ -20,7 +20,7 @@ def chi_square_func(calc, ana_func, ts, dt, method="FE", plot=False):
         plt.figure()
         plt.title(r"%s dx $=%g$" % (method, dx), fontsize=20)
         for i,(y,t,a) in enumerate(zip(xs,ts,ana)):
-            plt.plot(x, y,label=r"$u^{num}(x,%g)$, $\chi^2=%.4f$" % (t,chi_squared[i]))
+            plt.plot(x, y,label=r"$u^{num}(x,%g)$, $\chi^2=%gf$" % (t,chi_squared[i]))
             plt.plot(x, a,"--",label=r"$u^{ana}(x,%g)$" % t)
         plt.xlabel("x");plt.ylabel("u(x)")
         plt.legend(fontsize=12)

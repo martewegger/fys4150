@@ -8,14 +8,14 @@ plt.rcParams['font.size'] = 16
 dx = 0.1
 r=2
 dt = dx**2/r
-T_end = 0.02
+T_end1 = 0.02
 method = "ForwardEuler"
 #compile_func()
-run_func(T_end, dt, dx, method = "ForwardEuler")
+run_func(T_end1, dt, dx, method = "ForwardEuler")
 F_Euler = np.transpose(np.loadtxt("data_1D.txt"))[:,-1]
-run_func(T_end, dt, dx, method = "Crank_Nicolsen")
+run_func(T_end1, dt, dx, method = "Crank_Nicolsen")
 CN = np.transpose(np.loadtxt("data_1D.txt"))[:,-1]
-run_func(T_end, dt, dx, method = "BackwardEuler")
+run_func(T_end1, dt, dx, method = "BackwardEuler")
 B_Euler = np.transpose(np.loadtxt("data_1D.txt"))[:,-1]
 
 x = np.arange(0,1+dx,dx)
@@ -29,15 +29,15 @@ ax[0].set_xlabel('x')
 ax[0].set_ylabel(r'$u(x,t)$')
 ax[0].legend()
 
-T_end = 0.1
-run_func(T_end, dt, dx, method = "ForwardEuler")
-chi_square_func(np.loadtxt("data_1D.txt"), analytic_sol_func, np.array((0.02,0.1)), dt, method="FE", plot=True)
+T_end2 = 0.1
+run_func(T_end2, dt, dx, method = "ForwardEuler")
+chi_square_func(np.loadtxt("data_1D.txt"), analytic_sol_func, np.array((T_end1,T_end2)), dt, method="FE", plot=True)
 F_Euler = np.transpose(np.loadtxt("data_1D.txt"))[:,-1]
-run_func(T_end, dt, dx, method = "Crank_Nicolsen")
-chi_square_func(np.loadtxt("data_1D.txt"), analytic_sol_func, np.array((0.02,0.1)), dt, method="CN", plot=True)
+run_func(T_end2, dt, dx, method = "Crank_Nicolsen")
+chi_square_func(np.loadtxt("data_1D.txt"), analytic_sol_func, np.array((T_end1,T_end2)), dt, method="CN", plot=True)
 CN = np.transpose(np.loadtxt("data_1D.txt"))[:,-1]
-run_func(T_end, dt, dx, method = "BackwardEuler")
-chi_square_func(np.loadtxt("data_1D.txt"), analytic_sol_func, np.array((0.02,0.1)), dt, method="BE", plot=True)
+run_func(T_end2, dt, dx, method = "BackwardEuler")
+chi_square_func(np.loadtxt("data_1D.txt"), analytic_sol_func, np.array((T_end1,T_end2)), dt, method="BE", plot=True)
 B_Euler = np.transpose(np.loadtxt("data_1D.txt"))[:,-1]
 x = np.arange(0,1+dx,dx)
 

@@ -1,0 +1,3 @@
+### Instructions for running the code in project 4
+
+This projects solves the diffusion equation numerically by discretising the partial derivates using explicit Forward Euler, implicit Backward Euler and implicit Crank-Nicolsen. All three schemes are implemented in solving the 1D case in c++ program PDE.cpp. The 2D diffusion equation is solved only using the explicit Forward Euler scheme. All computations and presentation of results are controlled with a .py analysis program. These call upon the PDE.cpp class for a given parameter set and presents the results or carries out further analysis (e.g. chi squared test) which is then presented.

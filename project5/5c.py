@@ -21,7 +21,7 @@ B_Euler = np.transpose(np.loadtxt("data_1D.txt"))[:,-1]
 x = np.arange(0,1+dx,dx)
 
 fig, ax = plt.subplots(1,2,figsize = (12,6))
-ax[0].set_title(r'Time $=%g$, $\Delta t = \frac{(\Delta x)^2}{%g}$, $\Delta x = %g$' % (T_end, r, dx))
+ax[0].set_title(r'Time $=%g$, $\Delta t = \frac{(\Delta x)^2}{%g}$, $\Delta x = %g$' % (T_end1, r, dx))
 ax[0].plot(x, F_Euler, label='ForwardEuler')
 ax[0].plot(x, CN, label='Crank Nicolsen')
 ax[0].plot(x, B_Euler, label='BackwardEuler')
@@ -41,7 +41,7 @@ chi_square_func(np.loadtxt("data_1D.txt"), analytic_sol_func, np.array((T_end1,T
 B_Euler = np.transpose(np.loadtxt("data_1D.txt"))[:,-1]
 x = np.arange(0,1+dx,dx)
 
-ax[1].set_title(r'Time $=%g$, $\Delta t = \frac{(\Delta)x^2}{%g}$, $\Delta x = %g$' % (T_end, r, dx))
+ax[1].set_title(r'Time $=%g$, $\Delta t = \frac{(\Delta)x^2}{%g}$, $\Delta x = %g$' % (T_end2, r, dx))
 
 ax[1].plot(x, F_Euler, label='ForwardEuler')
 ax[1].plot(x, CN, label='Crank Nicolsen')

@@ -9,7 +9,10 @@ plt.rcParams['font.size'] = 16
 xy0 = 0
 xy1 = 1
 N = 50
-dxy = np.linspace(0.005,0.2, N)
+delta = 0.002
+#dxy = np.linspace(0.005,0.1, N+1)
+dxy = np.arange(0.005,0.1+delta, delta)
+N = len(dxy)
 chi_arr = np.zeros((N))
 Nxy = np.zeros((N))
 T_end = 0.02
@@ -17,9 +20,9 @@ r = 4
 dt = dxy[0]**2/r
 
 a=0
-for i in range(N):
+for i in range(len(dxy)):
     a+=1
-    print('computed = ',a,'/',N, end = "\r")
+    print('computed = ',a,'/',len(dxy)+1, end = "\r")
     #dt = dxy[i]**2/r
     run_func(T_end, dt, dxy[i])
     data = np.loadtxt('data_2D.txt')
@@ -29,11 +32,11 @@ for i in range(N):
     chi_arr[i] = chi_squared_func(data, analytic_func(X, Y, T_end))
 
 m, b = np. polyfit(dxy, chi_arr/Nxy, 1)
-plt.figure(figsize=(10,10))
+plt.figure(figsize=(11,11))
 plt.title('Stability analysis')
 plt.plot(dxy, chi_arr/Nxy, 'o')
-plt.plot(dxy, m*dxy + b, label='Linear fit')
-plt.xlabel(r'$\Delta (x,y)$')
+plt.plot(dxy, m*dxy + b, label='Linear fit, $y = %.4f\cdot h %.6f$' % (m, b))
+plt.xlabel(r'$h$')
 plt.ylabel(r'$\chi^2/$pixel')
 plt.legend()
 plt.savefig('dxy_stability.png')

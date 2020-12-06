@@ -7,19 +7,21 @@ def chi_square_func(calc, ana_func, ts, dt, method="FE", plot=False):
     ana = ana_func(x, ts)
     time = np.linspace(0,(n_t-1)*dt,n_t)
     xs = np.zeros((len(ts),n_x))
+    dx = 1/(n_x-1)
 
     for i,t in enumerate(ts):
         xs[i] = calc[np.argmin(np.abs(time - t))]
 
     var = (np.std(xs,axis=1)**2)[:,np.newaxis]
-    chi_squared = np.sum(((ana - xs)**2/var**2),axis=1)
+    chi_squared = np.sum(((ana[:,1:] - xs[:,1:])**2/ana[:,1:]**2),axis=1)/n_x
 
     if plot == True:
         plt.rcParams.update({'font.size': 14})
         plt.figure()
+        plt.title(r"%s dx $=%g$" % (method, dx), fontsize=20)
         for i,(y,t,a) in enumerate(zip(xs,ts,ana)):
-            plt.plot(x, y,label=r"calculated, t = %g, $\chi^2=%.3f$" % (t,chi_squared[i]))
-            plt.plot(x, a,"--",label="analytic, t = %g" % t)
+            plt.plot(x, y,label=r"$u^{num}(x,%g)$, $\chi^2=%.4f$" % (t,chi_squared[i]))
+            plt.plot(x, a,"--",label=r"$u^{ana}(x,%g)$" % t)
         plt.xlabel("x");plt.ylabel("u(x)")
         plt.legend(fontsize=12)
         plt.savefig("comparison%s.png" % method)

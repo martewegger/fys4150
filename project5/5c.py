@@ -1,5 +1,6 @@
 import numpy as np
 from run import *
+from chi_square import *
 import matplotlib.pyplot as plt
 from astropy import constants
 plt.rcParams['font.size'] = 16
@@ -30,10 +31,13 @@ ax[0].legend()
 
 T_end = 0.1
 run_func(T_end, dt, dx, method = "ForwardEuler")
+chi_square_func(np.loadtxt("data_1D.txt"), analytic_sol_func, np.array((0.02,0.1)), dt, method="FE", plot=True)
 F_Euler = np.transpose(np.loadtxt("data_1D.txt"))[:,-1]
 run_func(T_end, dt, dx, method = "Crank_Nicolsen")
+chi_square_func(np.loadtxt("data_1D.txt"), analytic_sol_func, np.array((0.02,0.1)), dt, method="CN", plot=True)
 CN = np.transpose(np.loadtxt("data_1D.txt"))[:,-1]
 run_func(T_end, dt, dx, method = "BackwardEuler")
+chi_square_func(np.loadtxt("data_1D.txt"), analytic_sol_func, np.array((0.02,0.1)), dt, method="BE", plot=True)
 B_Euler = np.transpose(np.loadtxt("data_1D.txt"))[:,-1]
 x = np.arange(0,1+dx,dx)
 

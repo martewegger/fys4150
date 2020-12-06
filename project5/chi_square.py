@@ -1,7 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-def chi_square_func(calc, ana_func, ts, dt, plot=False):
+def chi_square_func(calc, ana_func, ts, dt, method="FE", plot=False):
     n_t, n_x = calc.shape
     x = np.linspace(0,1,n_x)
     ana = ana_func(x, ts)
@@ -15,20 +15,21 @@ def chi_square_func(calc, ana_func, ts, dt, plot=False):
     chi_squared = np.sum(((ana - xs)**2/var**2),axis=1)
 
     if plot == True:
+        plt.rcParams.update({'font.size': 14})
         plt.figure()
         for i,(y,t,a) in enumerate(zip(xs,ts,ana)):
             plt.plot(x, y,label=r"calculated, t = %g, $\chi^2=%.3f$" % (t,chi_squared[i]))
             plt.plot(x, a,"--",label="analytic, t = %g" % t)
-        plt.xlabel("x")
-        plt.legend()
-        plt.savefig("comparison.png")
+        plt.xlabel("x");plt.ylabel("u(x)")
+        plt.legend(fontsize=12)
+        plt.savefig("comparison%s.png" % method)
         plt.close()
 
     return chi_squared
 
 def analytic_sol_func(x,t):
     k = np.arange(1,10001,1)
-    
+
     t = t[:,np.newaxis, np.newaxis]
     x = x[np.newaxis,:,np.newaxis]
     k = k[np.newaxis,np.newaxis,:]

@@ -1,7 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-def chi_square_func(calc, ana_func, ts, dt, method="FE", plot=False):
+def chi_square_func(calc, ana_func, ts, dt, method, plot=False):
     n_t, n_x = calc.shape
     x = np.linspace(0,1,n_x)
     ana = ana_func(x, ts)

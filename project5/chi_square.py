@@ -38,9 +38,3 @@ def analytic_sol_func(x,t):
 
     u = np.sum(2*(-1)**k*np.sin(x*k*np.pi)*np.exp(-t*(k*np.pi)**2)/(k*np.pi), axis=2)[:,:,np.newaxis] + x
     return u[:,:,0]
-
-if __name__ == "__main__":
-    t_array = np.array((0.02,0.05,0.1))
-    dt = 0.01/2
-    calc = np.loadtxt("data_1D.txt")
-    print(chi_square_func(calc, analytic_sol_func, t_array, dt, plot=True))

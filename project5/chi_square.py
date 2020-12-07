@@ -12,15 +12,26 @@ def chi_square_func(calc, ana_func, ts, dt, method, plot=False):
     for i,t in enumerate(ts):
         xs[i] = calc[np.argmin(np.abs(time - t))]
 
-    var = (np.std(xs,axis=1)**2)[:,np.newaxis]
-    chi_squared = np.sum(((ana[:,1:] - xs[:,1:])**2/ana[:,1:]**2),axis=1)/n_x
+    #test = xs[0]
+    #plt.figure()
+    #plt.plot(x, test, label='test')
+    #plt.plot(x,ana[0])
+    #chi_test = np.sum((xs[0,1:]-ana[0,1:])**2/ana[0,1:])/(n_x-1)
+    #print(chi_test)
+    #plt.legend()
+    #plt.show()
+
+    chi_squared = np.sum(((xs[:,1:]-ana[:,1:])**2/ana[:,1:]),axis=1)/(n_x-1)
 
     if plot == True:
         plt.rcParams.update({'font.size': 14})
         plt.figure()
         plt.title(r"%s dx $=%g$" % (method, dx), fontsize=20)
         for i,(y,t,a) in enumerate(zip(xs,ts,ana)):
+
             plt.plot(x, y,label=r"$u^{num}(x,%g)$, $\chi^2=%gf$" % (t,chi_squared[i]))
+            #plt.plot(x, y,label=r"$u^{num}(x,%g)$, $\chi^2=%gf$" % (t,chi_squared[i]))
+            #print(i, chi_squared[i])
             plt.plot(x, a,"--",label=r"$u^{ana}(x,%g)$" % t)
         plt.xlabel("x");plt.ylabel("u(x)")
         plt.legend(fontsize=12)

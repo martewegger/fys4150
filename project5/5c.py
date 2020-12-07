@@ -34,15 +34,19 @@ plt.legend()
 plt.savefig("task_c_t1.png")
 plt.close()
 
-run_func(T_end2, dt, dx, method = "ForwardEuler")
-chi_square_func(np.loadtxt("data_1D.txt"), analytic_sol_func, np.array((T_end1,T_end2)), dt, method="FE", plot=True)
-F_Euler = np.transpose(np.loadtxt("data_1D.txt"))[:,-1]
 run_func(T_end2, dt, dx, method = "Crank_Nicolsen")
 chi_square_func(np.loadtxt("data_1D.txt"), analytic_sol_func, np.array((T_end1,T_end2)), dt, method="CN", plot=True)
 CN = np.transpose(np.loadtxt("data_1D.txt"))[:,-1]
+
+run_func(T_end2, dt, dx, method = "ForwardEuler")
+F_Euler = np.transpose(np.loadtxt("data_1D.txt"))[:,-1]
+chi_square_func(np.loadtxt("data_1D.txt"), analytic_sol_func, np.array((T_end1,T_end2)), dt, method="FE", plot=True)
+
+
 run_func(T_end2, dt, dx, method = "BackwardEuler")
-chi_square_func(np.loadtxt("data_1D.txt"), analytic_sol_func, np.array((T_end1,T_end2)), dt, method="BE", plot=True)
 B_Euler = np.transpose(np.loadtxt("data_1D.txt"))[:,-1]
+chi_square_func(np.loadtxt("data_1D.txt"), analytic_sol_func, np.array((T_end1,T_end2)), dt, method="BE", plot=True)
+
 
 plt.figure()
 plt.title(r'$t=%g$, $\Delta t = (\Delta x^2)/%g$, $\Delta x = %g$' % (T_end2, r, dx))
